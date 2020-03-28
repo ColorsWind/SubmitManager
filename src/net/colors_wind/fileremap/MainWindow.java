@@ -18,12 +18,14 @@ import javax.swing.JFileChooser;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class MainWindow extends JFrame {
-
+	private final AdvancedOptions advancedOptions = new AdvancedOptions();
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField inputFolder;
+	private JTextField inputXls;
 
 	/**
 	 * Launch the application.
@@ -63,6 +65,11 @@ public class MainWindow extends JFrame {
 		JProgressBar progressBar = new JProgressBar();
 		
 		JButton btnNewButton_4 = new JButton("高级选项");
+		btnNewButton_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				advancedOptions.setVisible(true);
+			}
+		});
 		
 		JButton btnNewButton_3 = new JButton("停止");
 		
@@ -105,19 +112,29 @@ public class MainWindow extends JFrame {
 		JPanel panel = new JPanel();
 		contentPane.add(panel, BorderLayout.NORTH);
 		
-		JLabel lblNewLabel_1 = new JLabel("输入信息");
+		JLabel labelInputXls = new JLabel("输入表格");
 		
 		JButton btnNewButton_1_1 = new JButton("浏览");
+		btnNewButton_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				choiceXls().ifPresent(inputXls::setText);
+			}
+		});
 		
-		JLabel lblNewLabel = new JLabel("输入信息");
+		JLabel labelInputFolder = new JLabel("输入数据");
 		
-		textField = new JTextField("测试");
-		textField.setColumns(10);
+		inputFolder = new JTextField("测试");
+		inputFolder.setColumns(10);
 		
-		textField_1 = new JTextField("测试2");
-		textField_1.setColumns(10);
+		inputXls = new JTextField("测试2");
+		inputXls.setColumns(10);
 		
 		JButton btnNewButton_1 = new JButton("浏览");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				choiceFolder().ifPresent(inputFolder::setText);
+			}
+		});
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -125,16 +142,16 @@ public class MainWindow extends JFrame {
 				.addGroup(gl_panel.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblNewLabel)
-						.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE))
+						.addComponent(labelInputFolder)
+						.addComponent(labelInputXls, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_panel.createSequentialGroup()
-							.addComponent(textField, GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)
+							.addComponent(inputFolder, GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnNewButton_1))
 						.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
-							.addComponent(textField_1, GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
+							.addComponent(inputXls, GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnNewButton_1_1, GroupLayout.PREFERRED_SIZE, 57, GroupLayout.PREFERRED_SIZE)))
 					.addGap(4))
@@ -145,13 +162,13 @@ public class MainWindow extends JFrame {
 				.addGroup(gl_panel.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblNewLabel_1)
+						.addComponent(inputXls, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(labelInputXls)
 						.addComponent(btnNewButton_1_1))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNewLabel)
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(labelInputFolder)
+						.addComponent(inputFolder, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnNewButton_1))
 					.addContainerGap(11, Short.MAX_VALUE))
 		);
