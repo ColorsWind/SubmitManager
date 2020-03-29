@@ -33,6 +33,8 @@ public class MainWindow extends JFrame {
 	private JTextField inputXls;
 	private JTextArea outputArea;
 	private JProgressBar progressBar;
+	private JButton buttonStart;
+	private JButton buttonStop;
 
 	/**
 	 * Launch the application.
@@ -78,9 +80,10 @@ public class MainWindow extends JFrame {
 			}
 		});
 		
-		JButton buttonStop = new JButton("停止");
+		buttonStop = new JButton("停止");
+		buttonStop.setEnabled(false);
 		
-		JButton buttonStart = new JButton("开始");
+		buttonStart = new JButton("开始");
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
 		gl_panel_1.setHorizontalGroup(
 			gl_panel_1.createParallelGroup(Alignment.TRAILING)
@@ -201,5 +204,15 @@ public class MainWindow extends JFrame {
 		default:
 			return Optional.of(chooser.getSelectedFile().getAbsolutePath());
 		}
+	}
+	
+	public void handleTaskStart() {
+		this.buttonStart.setEnabled(false);
+		this.buttonStop.setEnabled(true);
+	}
+	
+	public void handleTaskStop() {
+		this.buttonStart.setEnabled(true);
+		this.buttonStop.setEnabled(false);
 	}
 }
