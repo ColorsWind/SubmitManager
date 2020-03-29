@@ -20,12 +20,19 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JTextArea;
 
 public class MainWindow extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 710005323306431087L;
 	private final AdvancedOptions advancedOptions = new AdvancedOptions();
 	private JPanel contentPane;
 	private JTextField inputFolder;
 	private JTextField inputXls;
+	private JTextArea outputArea;
+	private JProgressBar progressBar;
 
 	/**
 	 * Launch the application.
@@ -62,49 +69,42 @@ public class MainWindow extends JFrame {
 		JPanel panel_1 = new JPanel();
 		contentPane.add(panel_1, BorderLayout.SOUTH);
 		
-		JProgressBar progressBar = new JProgressBar();
+		progressBar = new JProgressBar();
 		
-		JButton btnNewButton_4 = new JButton("高级选项");
-		btnNewButton_4.addActionListener(new ActionListener() {
+		JButton buttonAdvanceOption = new JButton("高级选项");
+		buttonAdvanceOption.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				advancedOptions.setVisible(true);
 			}
 		});
 		
-		JButton btnNewButton_3 = new JButton("停止");
+		JButton buttonStop = new JButton("停止");
 		
-		JButton btnNewButton_2 = new JButton("开始");
+		JButton buttonStart = new JButton("开始");
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
 		gl_panel_1.setHorizontalGroup(
 			gl_panel_1.createParallelGroup(Alignment.TRAILING)
-				.addGap(0, 543, Short.MAX_VALUE)
 				.addGroup(gl_panel_1.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(progressBar, GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+					.addComponent(progressBar, GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnNewButton_4, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
+					.addComponent(buttonAdvanceOption, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnNewButton_3, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
+					.addComponent(buttonStop, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnNewButton_2, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)
+					.addComponent(buttonStart, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
 		);
 		gl_panel_1.setVerticalGroup(
 			gl_panel_1.createParallelGroup(Alignment.TRAILING)
-				.addGap(0, 43, Short.MAX_VALUE)
 				.addGroup(gl_panel_1.createSequentialGroup()
+					.addContainerGap()
 					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel_1.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(btnNewButton_2, GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE))
-						.addGroup(gl_panel_1.createSequentialGroup()
-							.addContainerGap()
-							.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
-								.addComponent(btnNewButton_3, GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
-								.addComponent(btnNewButton_4, GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)))
-						.addGroup(gl_panel_1.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(progressBar, GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)))
+						.addComponent(buttonStart, GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
+						.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+							.addComponent(buttonStop, GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
+							.addComponent(buttonAdvanceOption, GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE))
+						.addComponent(progressBar, GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE))
 					.addGap(7))
 		);
 		panel_1.setLayout(gl_panel_1);
@@ -173,6 +173,9 @@ public class MainWindow extends JFrame {
 					.addContainerGap(11, Short.MAX_VALUE))
 		);
 		panel.setLayout(gl_panel);
+		
+		outputArea = new JTextArea();
+		contentPane.add(outputArea, BorderLayout.CENTER);
 	}
 	
 	public Optional<String> choiceXls() {
@@ -199,5 +202,4 @@ public class MainWindow extends JFrame {
 			return Optional.of(chooser.getSelectedFile().getAbsolutePath());
 		}
 	}
-
 }
