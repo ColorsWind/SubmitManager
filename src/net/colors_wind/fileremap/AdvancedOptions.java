@@ -31,6 +31,7 @@ public class AdvancedOptions extends JDialog {
 	public static void main(String[] args) {
 		try {
 			AdvancedOptions dialog = new AdvancedOptions();
+			MainWindow.centre(dialog);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -49,14 +50,16 @@ public class AdvancedOptions extends JDialog {
 			e1.printStackTrace();
 		}
 		setType(Type.POPUP);
-		setBounds(100, 100, 410, 300);
+		setBounds(100, 100, 546, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(new FormLayout(new ColumnSpec[] {
-				ColumnSpec.decode("180px:grow"),
+				ColumnSpec.decode("192px:grow"),
 				FormSpecs.LABEL_COMPONENT_GAP_COLSPEC,
-				ColumnSpec.decode("180px"),},
+				ColumnSpec.decode("180px"),
+				FormSpecs.RELATED_GAP_COLSPEC,
+				FormSpecs.DEFAULT_COLSPEC,},
 			new RowSpec[] {
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,
