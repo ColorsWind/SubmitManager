@@ -215,7 +215,6 @@ public class MainWindow extends JFrame {
 		this.buttonStop.setEnabled(false);
 	}
 
-	
 
 
 }

@@ -39,9 +39,9 @@ public class FormMap {
 	public void inputForm(@NonNull File file, @NonNull MainWindow mainWindow) throws InterruptedException {
 		try {
 			inputForm0(file);
-			mainWindow.printlnSafty(new StringBuilder("成功读取表格, 共计: ").append(data.size()).append(" 条数据.").toString());
+			mainWindow.println(new StringBuilder("成功读取表格, 共计: ").append(data.size()).append(" 条数据.").toString());
 		} catch (Exception e) {
-			mainWindow.printlnSafty(new StringBuilder("读取表格时出现异常: ").append(e.toString()).toString());
+			mainWindow.println(new StringBuilder("读取表格时出现异常: ").append(e.toString()).toString());
 			e.printStackTrace();
 			throw new InterruptedException();
 		}
@@ -53,7 +53,7 @@ public class FormMap {
 				StudentInfo info = getStudentInfo(file.getName());
 				info.addFile(file);
 			} catch (Exception e) {
-				mainWindow.printlnError(e);
+				mainWindow.printlnError("获取文件列表时出错: ", e);
 				e.printStackTrace();
 			}
 		});
