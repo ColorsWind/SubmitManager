@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class RenameTask {
+public class FileMoveOperator {
 	private final File folder;
 	private final AtomicInteger countSuccess = new AtomicInteger();
 
@@ -18,14 +18,14 @@ public class RenameTask {
 		mainWindow.printlnSafty(new StringBuilder("共找到 ").append(files.length).append(" 个文件, 重命名工作即将开始.").toString());
 		Arrays.stream(files).parallel().forEach(file -> {
 			try {
-				String[] studentInfo = form.getStudentInfo(file.getName());
-				File re = new File(folder, studentInfo[6] + "-" + studentInfo[7] + ".pdf");
+				StudentInfo studentInfo = form.getStudentInfo(file.getName());
+				File re = new File(folder, studentInfo.getFileName());
 				file.renameTo(re);
 				mainWindow.printlnSafty(new StringBuilder("将 ").append(file.getName()).append(" 重命名为 ").append(re.getName())
 						.toString());
 				countSuccess.incrementAndGet();
 			} catch (IllegalArgumentException e) {
-				mainWindow.printlnSafty("重命名文件时发送错误: " + e.toString());
+				mainWindow.printlnError("重命名文件时发送错误: ", e);
 				e.printStackTrace();
 			}
 		});

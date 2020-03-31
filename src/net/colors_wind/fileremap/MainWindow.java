@@ -1,15 +1,10 @@
 package net.colors_wind.fileremap;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.Toolkit;
-import java.awt.Window;
 import java.util.Optional;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -24,7 +19,6 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
@@ -34,9 +28,6 @@ public class MainWindow extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 710005323306431087L;
-	protected final AdvancedOptions advancedOptions = new AdvancedOptions();
-	protected final Options options = new Options();
-	{centre(advancedOptions);}
 	private JPanel contentPane;
 	protected JTextField inputFolder;
 	protected JTextField inputXls;
@@ -46,38 +37,8 @@ public class MainWindow extends JFrame {
 	private JScrollPane scrollBar;
 	private JTextArea outputArea;
 
-	public static void centre(Window window) {
-		Toolkit kit = Toolkit.getDefaultToolkit();
-		Dimension screensize = kit.getScreenSize();
-		int screenheight = screensize.height;
-		int screenwidth = screensize.width;
-		window.setLocation(screenwidth / 2 - window.getWidth() / 2, screenheight / 2 - window.getHeight() / 2);
-	}
 	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MainWindow frame = new MainWindow();
-					centre(frame);
-					frame.setVisible(true);
-					frame.options.loadFromFile();
-					frame.options.updateFile();
-					frame.options.updateWindow(frame);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+
 
 	/**
 	 * Create the frame.
@@ -99,13 +60,7 @@ public class MainWindow extends JFrame {
 		JButton buttonAdvanceOption = new JButton("高级选项");
 		buttonAdvanceOption.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				advancedOptions.setVisible(true);
-				try {
-					options.loadFromWindow(MainWindow.this);
-					options.updateFile();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
+				Main.outputOptions.setVisible(true);
 			}
 		});
 
@@ -117,7 +72,7 @@ public class MainWindow extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				File dataFolder = new File(inputFolder.getText());
 				File xlsFile = new File(inputXls.getText());
-				new HandleFileTask(MainWindow.this, xlsFile, dataFolder).start();
+				new ProcessFileTask(MainWindow.this, xlsFile, dataFolder).start();
 			}
 		});
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
@@ -255,6 +210,13 @@ public class MainWindow extends JFrame {
 		this.buttonStart.setEnabled(true);
 		this.buttonStop.setEnabled(false);
 	}
+
+	public void printlnError(Exception e) {
+		printlnError(e.toString());
+	}
 	
+	public void printlnError(CharSequence sequence, Exception e) {
+		printlnError(sequence + ": " + e.toString());
+	}
 
 }

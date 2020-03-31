@@ -2,12 +2,11 @@ package net.colors_wind.fileremap;
 
 import java.io.File;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
 @RequiredArgsConstructor
-public class HandleFileTask implements Runnable {
+public class ProcessFileTask implements Runnable {
 	private final MainWindow mainWindow;
 	private final File xlsFile;
 	private final File dataDir;
@@ -18,10 +17,13 @@ public class HandleFileTask implements Runnable {
 	public void run() {
 		mainWindow.handleTaskStart();
 		try {
-			FormMap form = new FormMap(xlsFile);
-			form.inputWrap(mainWindow);
-			RenameTask rename = new RenameTask(dataDir);
-			rename.start(mainWindow, form);
+			FormMap form = new FormMap();
+			form.inputForm(xlsFile, mainWindow);
+			form.inputFileList(dataDir, mainWindow);
+			FileContentOperator content = new FileContentOperator();
+			content.convert(form.getStudents(), mainWindow);
+			FileMoveOperator move = new FileMoveOperator(dataDir);
+			move.start(mainWindow, form);
 		} catch (InterruptedException e) {
 		} catch (Exception e) {
 			e.printStackTrace();

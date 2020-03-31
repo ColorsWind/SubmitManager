@@ -9,9 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.awt.event.ActionEvent;
-import javax.swing.JCheckBox;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormSpecs;
@@ -21,6 +19,7 @@ import lombok.NonNull;
 
 import java.awt.Font;
 import javax.swing.JLabel;
+import javax.swing.JCheckBox;
 import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -28,7 +27,7 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JRadioButton;
 
-public class AdvancedOptions extends JDialog {
+public class OutputOptions extends JDialog {
 
 	/**
 	 * 
@@ -53,7 +52,7 @@ public class AdvancedOptions extends JDialog {
 	 */
 	public static void main(String[] args) {
 		try {
-			AdvancedOptions dialog = new AdvancedOptions();
+			OutputOptions dialog = new OutputOptions();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -64,7 +63,7 @@ public class AdvancedOptions extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public AdvancedOptions() {
+	public OutputOptions() {
 		setTitle("输出选项");
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -116,7 +115,7 @@ public class AdvancedOptions extends JDialog {
 				JButton okButton = new JButton("确定");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						AdvancedOptions.this.setVisible(false);
+						OutputOptions.this.setVisible(false);
 					}
 				});
 				okButton.setActionCommand("");
@@ -127,7 +126,7 @@ public class AdvancedOptions extends JDialog {
 				JButton cancelButton = new JButton("取消");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						AdvancedOptions.this.setVisible(false);
+						OutputOptions.this.setVisible(false);
 					}
 				});
 				cancelButton.setActionCommand("取消");

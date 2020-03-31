@@ -1,6 +1,5 @@
 package net.colors_wind.fileremap;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -10,7 +9,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
-import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -73,22 +71,20 @@ public class Options {
 		out.close();
 	}
 	
-	public void loadFromWindow(MainWindow mainWindow) {
+	public void loadFromWindow(MainWindow mainWindow, OutputOptions outputOption) {
 		this.inputDir = mainWindow.inputFolder.getText();
 		this.inputXls = mainWindow.inputXls.getText();
-		AdvancedOptions aop = mainWindow.advancedOptions;
-		this.outputFile = aop.outputFile.getText();
-		this.addRawData = aop.checkboxAddRawData.isSelected();
-		this.strategy = aop.getConflictStrategy();
+		this.outputFile = outputOption.outputFile.getText();
+		this.addRawData = outputOption.checkboxAddRawData.isSelected();
+		this.strategy = outputOption.getConflictStrategy();
 	}
 	
-	public void updateWindow(MainWindow mainWindow) {
+	public void updateWindow(MainWindow mainWindow, OutputOptions outputOption) {
 		mainWindow.inputFolder.setText(this.inputDir);
 		mainWindow.inputXls.setText(this.inputXls);
-		AdvancedOptions aop = mainWindow.advancedOptions;
-		aop.checkboxAddRawData.setSelected(addRawData);
-		aop.outputFile.setText(this.outputFile);
-		aop.setConflictStrategy(strategy);
+		outputOption.checkboxAddRawData.setSelected(addRawData);
+		outputOption.outputFile.setText(this.outputFile);
+		outputOption.setConflictStrategy(strategy);
 	}
 
 }
