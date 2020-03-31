@@ -71,6 +71,7 @@ public class MainWindow extends JFrame {
 		buttonStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Main.OPTIONS.loadFromWindow(Main.mainWindow, Main.outputOptions);
+				Main.OPTIONS.updateFileWrap(MainWindow.this);
 				new ProcessFileTask(MainWindow.this).start();
 			}
 		});
@@ -119,7 +120,7 @@ public class MainWindow extends JFrame {
 		JButton btnNewButton_1 = new JButton("浏览");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				choiceFolder().ifPresent(inputDir::setText);
+				choiceDir().ifPresent(inputDir::setText);
 			}
 		});
 		GroupLayout gl_panel = new GroupLayout(panel);
@@ -175,7 +176,7 @@ public class MainWindow extends JFrame {
 		}
 	}
 
-	public Optional<String> choiceFolder() {
+	public Optional<String> choiceDir() {
 		JFileChooser chooser = new JFileChooser();
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		int result = chooser.showOpenDialog(this);
@@ -187,17 +188,21 @@ public class MainWindow extends JFrame {
 		}
 	}
 
-	public void println(String msg) {
+	private void println0(String msg) {
 		outputArea.append(msg);
 		outputArea.append("\n");
 	}
 
-	public void printlnSafty(String msg) {
-		SwingUtilities.invokeLater(() -> println(msg));
+	public void println(String msg) {
+		SwingUtilities.invokeLater(() -> println0(msg));
 	}
 	
 	public void printlnError(String msg) {
-		printlnSafty(msg);
+		println(msg);
+	}
+	
+	public void printlnError(CharSequence sequence, Exception e) {
+		printlnError(sequence + ": " + e.toString());
 	}
 
 	public void handleTaskStart() {
@@ -210,12 +215,7 @@ public class MainWindow extends JFrame {
 		this.buttonStop.setEnabled(false);
 	}
 
-	public void printlnError(Exception e) {
-		printlnError(e.toString());
-	}
 	
-	public void printlnError(CharSequence sequence, Exception e) {
-		printlnError(sequence + ": " + e.toString());
-	}
+
 
 }

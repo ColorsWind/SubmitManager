@@ -41,7 +41,16 @@ public class Main {
 				System.exit(-1);
 			}
 		});
-
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			@Override
+			public void run() {
+				try {
+					OPTIONS.updateFile();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 	public static void centre(Window window) {
