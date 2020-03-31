@@ -35,7 +35,7 @@ public class Main {
 				outputOptions = new OutputOptions();
 				centre(outputOptions);
 				OPTIONS.updateWindow(mainWindow, outputOptions);
-				outputOptions.setVisible(true);
+				mainWindow.setVisible(true);
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.exit(-1);
