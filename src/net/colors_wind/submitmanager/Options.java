@@ -51,6 +51,15 @@ public class Options {
 		}
 	}
 	
+	public void updateFileWrap(MainWindow mainWindow) {
+		try {
+			updateFile();
+		} catch (IOException e) {
+			mainWindow.printlnError("保存配置时出现异常: ", e);
+			e.printStackTrace();
+		}
+	}
+	
 	public void updateFile() throws IOException {
 		File file = new File(CONF_FILE_NAME);
 		if (!file.exists()) {

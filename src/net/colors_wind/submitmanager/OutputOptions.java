@@ -117,6 +117,7 @@ public class OutputOptions extends JDialog {
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						OutputOptions.this.setVisible(false);
+						Main.OPTIONS.updateFileWrap(Main.mainWindow);
 					}
 				});
 				okButton.setActionCommand("");
