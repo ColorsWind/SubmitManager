@@ -24,6 +24,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
@@ -33,11 +34,12 @@ public class MainWindow extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 710005323306431087L;
-	private final AdvancedOptions advancedOptions = new AdvancedOptions();
+	protected final AdvancedOptions advancedOptions = new AdvancedOptions();
+	protected final Options options = new Options();
 	{centre(advancedOptions);}
 	private JPanel contentPane;
-	private JTextField inputFolder;
-	private JTextField inputXls;
+	protected JTextField inputFolder;
+	protected JTextField inputXls;
 	private JProgressBar progressBar;
 	private JButton buttonStart;
 	private JButton buttonStop;
@@ -67,6 +69,9 @@ public class MainWindow extends JFrame {
 					MainWindow frame = new MainWindow();
 					centre(frame);
 					frame.setVisible(true);
+					frame.options.loadFromFile();
+					frame.options.updateFile();
+					frame.options.updateWindow(frame);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -95,6 +100,12 @@ public class MainWindow extends JFrame {
 		buttonAdvanceOption.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				advancedOptions.setVisible(true);
+				try {
+					options.loadFromWindow(MainWindow.this);
+					options.updateFile();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 
@@ -145,7 +156,11 @@ public class MainWindow extends JFrame {
 
 		JLabel labelInputFolder = new JLabel("输入数据");
 
+		inputFolder = new JTextField("");
+		inputFolder.setColumns(10);
 
+		inputXls = new JTextField("");
+		inputXls.setColumns(10);
 
 		JButton btnNewButton_1 = new JButton("浏览");
 		btnNewButton_1.addActionListener(new ActionListener() {
@@ -195,7 +210,7 @@ public class MainWindow extends JFrame {
 
 	public Optional<String> choiceXls() {
 		JFileChooser chooser = new JFileChooser();
-		FileFilter filter = new FileNameExtensionFilter("表格文件", "xls", "xlsx");
+		FileFilter filter = new FileNameExtensionFilter("表格文件(*.xls, *.xlsx)", "xls", "xlsx");
 		chooser.setFileFilter(filter);
 		int result = chooser.showOpenDialog(this);
 		switch (result) {
@@ -225,6 +240,10 @@ public class MainWindow extends JFrame {
 
 	public void printlnSafty(String msg) {
 		SwingUtilities.invokeLater(() -> println(msg));
+	}
+	
+	public void printlnError(String msg) {
+		printlnSafty(msg);
 	}
 
 	public void handleTaskStart() {

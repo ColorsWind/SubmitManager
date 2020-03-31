@@ -9,13 +9,24 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.RowSpec;
+
+import lombok.NonNull;
+
 import java.awt.Font;
+import javax.swing.JLabel;
+import javax.swing.ButtonGroup;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JTextField;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JRadioButton;
 
 public class AdvancedOptions extends JDialog {
 
@@ -24,6 +35,18 @@ public class AdvancedOptions extends JDialog {
 	 */
 	private static final long serialVersionUID = -8108291943205318602L;
 	private final JPanel contentPanel = new JPanel();
+	private JLabel lblNewLabel;
+	protected JTextField outputFile;
+	protected JRadioButton radiobuttonKeepBig;
+	protected JRadioButton radiobuttonKeepSmall;
+	protected JRadioButton radiobuttonCombine;
+	protected JRadioButton radiobuttonNotModify;
+	protected ButtonGroup conflictStrategy;
+	private JLabel lblNewLabel_1;
+	private JLabel lblNewLabel_2;
+	private JCheckBox checkboxCombine;
+	private JCheckBox checkboxTryCombine;
+	protected JCheckBox checkboxAddRawData;
 
 	/**
 	 * Launch the application.
@@ -31,7 +54,6 @@ public class AdvancedOptions extends JDialog {
 	public static void main(String[] args) {
 		try {
 			AdvancedOptions dialog = new AdvancedOptions();
-			MainWindow.centre(dialog);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -43,84 +65,49 @@ public class AdvancedOptions extends JDialog {
 	 * Create the dialog.
 	 */
 	public AdvancedOptions() {
-		setTitle("高级选项");
+		setTitle("输出选项");
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
 		setType(Type.POPUP);
-		setBounds(100, 100, 546, 300);
+		setBounds(100, 100, 410, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		contentPanel.setLayout(new FormLayout(new ColumnSpec[] {
-				ColumnSpec.decode("192px:grow"),
-				FormSpecs.LABEL_COMPONENT_GAP_COLSPEC,
-				ColumnSpec.decode("180px"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,},
-			new RowSpec[] {
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.UNRELATED_GAP_ROWSPEC,
-				RowSpec.decode("23px"),
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,}));
+		getContentPane().add(contentPanel, BorderLayout.NORTH);
 		{
-			JCheckBox chckbxNewCheckBox_1 = new JCheckBox("转换png");
-			chckbxNewCheckBox_1.setFont(new Font("宋体", Font.PLAIN, 14));
-			chckbxNewCheckBox_1.setSelected(true);
-			contentPanel.add(chckbxNewCheckBox_1, "1, 2, left, top");
+			lblNewLabel = new JLabel("输出文件");
+			lblNewLabel.setFont(new Font("宋体", Font.PLAIN, 12));
 		}
-		{
-			JCheckBox chckbxNewCheckBox_6 = new JCheckBox("添加文件原始信息");
-			chckbxNewCheckBox_6.setFont(new Font("宋体", Font.PLAIN, 14));
-			contentPanel.add(chckbxNewCheckBox_6, "3, 2");
-		}
-		{
-			JCheckBox chckbxNewCheckBox = new JCheckBox("转换jpg/jpeg");
-			chckbxNewCheckBox.setFont(new Font("宋体", Font.PLAIN, 14));
-			chckbxNewCheckBox.setSelected(true);
-			contentPanel.add(chckbxNewCheckBox, "1, 4, left, top");
-		}
-		{
-			JCheckBox chckbxNewCheckBox_5 = new JCheckBox("多个文件");
-			chckbxNewCheckBox_5.setFont(new Font("宋体", Font.PLAIN, 14));
-			contentPanel.add(chckbxNewCheckBox_5, "3, 4");
-		}
-		{
-			JCheckBox chckbxNewCheckBox_2 = new JCheckBox("转换doc/docx");
-			chckbxNewCheckBox_2.setSelected(true);
-			chckbxNewCheckBox_2.setFont(new Font("宋体", Font.PLAIN, 14));
-			contentPanel.add(chckbxNewCheckBox_2, "1, 6");
-		}
-		{
-			JCheckBox chckbxNewCheckBox_3 = new JCheckBox("转换xls/xlsx");
-			chckbxNewCheckBox_3.setSelected(true);
-			chckbxNewCheckBox_3.setFont(new Font("宋体", Font.PLAIN, 14));
-			contentPanel.add(chckbxNewCheckBox_3, "1, 8");
-		}
-		{
-			JCheckBox chckbxNewCheckBox_4 = new JCheckBox("转换ppt/pptx");
-			chckbxNewCheckBox_4.setSelected(true);
-			chckbxNewCheckBox_4.setFont(new Font("宋体", Font.PLAIN, 14));
-			contentPanel.add(chckbxNewCheckBox_4, "1, 10");
-		}
-		{
-			JCheckBox chckbxNewCheckBox_7 = new JCheckBox("转换txt");
-			chckbxNewCheckBox_7.setFont(new Font("宋体", Font.PLAIN, 14));
-			chckbxNewCheckBox_7.setSelected(true);
-			contentPanel.add(chckbxNewCheckBox_7, "1, 12");
-		}
+		
+		outputFile = new JTextField();
+		outputFile.setText("{7}-{8}.pdf");
+		outputFile.setColumns(10);
+		
+		JButton btnNewButton = new JButton(".");
+		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
+		gl_contentPanel.setHorizontalGroup(
+			gl_contentPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPanel.createSequentialGroup()
+					.addGap(8)
+					.addComponent(lblNewLabel)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(outputFile, GroupLayout.PREFERRED_SIZE, 279, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 27, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		gl_contentPanel.setVerticalGroup(
+			gl_contentPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPanel.createSequentialGroup()
+					.addGap(5)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(outputFile, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnNewButton)
+						.addComponent(lblNewLabel)))
+		);
+		contentPanel.setLayout(gl_contentPanel);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -147,6 +134,104 @@ public class AdvancedOptions extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
+		{
+			JPanel panel = new JPanel();
+			getContentPane().add(panel, BorderLayout.CENTER);
+			panel.setLayout(new FormLayout(new ColumnSpec[] {
+					ColumnSpec.decode("center:193px"),
+					ColumnSpec.decode("center:199px"),},
+				new RowSpec[] {
+					FormSpecs.LINE_GAP_ROWSPEC,
+					RowSpec.decode("25px"),
+					FormSpecs.RELATED_GAP_ROWSPEC,
+					FormSpecs.DEFAULT_ROWSPEC,
+					FormSpecs.RELATED_GAP_ROWSPEC,
+					FormSpecs.DEFAULT_ROWSPEC,
+					FormSpecs.RELATED_GAP_ROWSPEC,
+					FormSpecs.DEFAULT_ROWSPEC,
+					FormSpecs.RELATED_GAP_ROWSPEC,
+					FormSpecs.DEFAULT_ROWSPEC,
+					FormSpecs.RELATED_GAP_ROWSPEC,
+					FormSpecs.DEFAULT_ROWSPEC,}));
+			{
+				lblNewLabel_2 = new JLabel("转换选项");
+				panel.add(lblNewLabel_2, "1, 2");
+			}
+			{
+				lblNewLabel_1 = new JLabel("文件名冲突处理");
+				panel.add(lblNewLabel_1, "2, 2");
+			}
+			{
+				checkboxCombine = new JCheckBox("尝试合并多个文件");
+				checkboxCombine.setEnabled(false);
+				checkboxCombine.setSelected(true);
+				panel.add(checkboxCombine, "1, 4");
+			}
+			{
+				radiobuttonKeepSmall = new JRadioButton("保留序号较小的文件");
+				panel.add(radiobuttonKeepSmall, "2, 4");
+			}
+			{
+				checkboxTryCombine = new JCheckBox("尝试转换图片文件");
+				checkboxTryCombine.setEnabled(false);
+				checkboxTryCombine.setSelected(true);
+				panel.add(checkboxTryCombine, "1, 6");
+			}
+			{
+				radiobuttonKeepBig = new JRadioButton("保留序号较大的文件");
+				panel.add(radiobuttonKeepBig, "2, 6");
+			}
+			{
+				checkboxAddRawData = new JCheckBox("添加文件原始信息");
+				panel.add(checkboxAddRawData, "1, 8");
+			}
+			{
+				radiobuttonCombine = new JRadioButton("按序号从小到大合并");
+				radiobuttonCombine.setSelected(true);
+				panel.add(radiobuttonCombine, "2, 8");
+			}
+			{
+				radiobuttonNotModify = new JRadioButton("不处理保留原始文件");
+				panel.add(radiobuttonNotModify, "2, 10");
+			}
+			conflictStrategy = new ButtonGroup();
+			conflictStrategy.add(radiobuttonCombine);
+			conflictStrategy.add(radiobuttonKeepBig);
+			conflictStrategy.add(radiobuttonKeepSmall);
+			conflictStrategy.add(radiobuttonNotModify);
+		}
 	}
-
+	
+	public ConflictStrategy getConflictStrategy() {
+		if (radiobuttonCombine.isSelected()) {
+			return ConflictStrategy.COMBINE_BY_ASCEND;
+		} else if (radiobuttonKeepSmall.isSelected()) {
+			return ConflictStrategy.KEEP_INDEX_SMALL;
+		} else if (radiobuttonKeepBig.isSelected()) {
+			return ConflictStrategy.KEEP_INDEX_BIG;
+		} else if (radiobuttonNotModify.isSelected()) {
+			return ConflictStrategy.DO_NOT_MODIFY;
+		}
+		//won't happen
+		return ConflictStrategy.COMBINE_BY_ASCEND;
+	}
+	
+	public void setConflictStrategy(@NonNull ConflictStrategy strategy) {
+		switch(strategy) {
+		case COMBINE_BY_ASCEND:
+			this.radiobuttonCombine.setSelected(true);
+			break;
+		case DO_NOT_MODIFY:
+			this.radiobuttonNotModify.setSelected(true);
+			break;
+		case KEEP_INDEX_BIG:
+			this.radiobuttonKeepBig.setEnabled(true);
+			break;
+		case KEEP_INDEX_SMALL:
+			this.radiobuttonKeepSmall.setEnabled(true);
+			break;
+		default:
+			break;
+		}
+	}
 }
