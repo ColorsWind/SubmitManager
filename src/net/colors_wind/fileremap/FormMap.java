@@ -31,6 +31,7 @@ public class FormMap {
 			StudentInfo studentInfo = StudentInfo.fromRowData(row);
 			this.data.put(studentInfo.getIndex(), studentInfo);
 		}
+		excel.close();
 	}
 	
 	
