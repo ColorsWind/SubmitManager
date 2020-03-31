@@ -1,4 +1,4 @@
-package net.colors_wind.fileremap;
+package net.colors_wind.submitmanager;
 
 import java.io.File;
 import java.util.Arrays;

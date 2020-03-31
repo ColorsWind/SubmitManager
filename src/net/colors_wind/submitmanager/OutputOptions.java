@@ -1,4 +1,4 @@
-package net.colors_wind.fileremap;
+package net.colors_wind.submitmanager;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -46,6 +46,7 @@ public class OutputOptions extends JDialog {
 	private JCheckBox checkboxCombine;
 	private JCheckBox checkboxTryCombine;
 	protected JCheckBox checkboxAddRawData;
+	private JCheckBox moveInsteadCopy;
 
 	/**
 	 * Launch the application.
@@ -188,6 +189,11 @@ public class OutputOptions extends JDialog {
 				radiobuttonCombine = new JRadioButton("按序号从小到大合并");
 				radiobuttonCombine.setSelected(true);
 				panel.add(radiobuttonCombine, "2, 8");
+			}
+			{
+				moveInsteadCopy = new JCheckBox("移动文件代替拷贝");
+				moveInsteadCopy.setEnabled(false);
+				panel.add(moveInsteadCopy, "1, 10");
 			}
 			{
 				radiobuttonNotModify = new JRadioButton("不处理保留原始文件");
