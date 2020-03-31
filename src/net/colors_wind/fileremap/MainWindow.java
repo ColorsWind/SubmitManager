@@ -18,7 +18,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
@@ -29,7 +28,7 @@ public class MainWindow extends JFrame {
 	 */
 	private static final long serialVersionUID = 710005323306431087L;
 	private JPanel contentPane;
-	protected JTextField inputFolder;
+	protected JTextField inputDir;
 	protected JTextField inputXls;
 	private JProgressBar progressBar;
 	private JButton buttonStart;
@@ -70,9 +69,8 @@ public class MainWindow extends JFrame {
 		buttonStart = new JButton("开始");
 		buttonStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				File dataFolder = new File(inputFolder.getText());
-				File xlsFile = new File(inputXls.getText());
-				new ProcessFileTask(MainWindow.this, xlsFile, dataFolder).start();
+				Main.OPTIONS.loadFromWindow(Main.mainWindow, Main.outputOptions);
+				new ProcessFileTask(MainWindow.this).start();
 			}
 		});
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
@@ -111,8 +109,8 @@ public class MainWindow extends JFrame {
 
 		JLabel labelInputFolder = new JLabel("输入数据");
 
-		inputFolder = new JTextField("");
-		inputFolder.setColumns(10);
+		inputDir = new JTextField("");
+		inputDir.setColumns(10);
 
 		inputXls = new JTextField("");
 		inputXls.setColumns(10);
@@ -120,7 +118,7 @@ public class MainWindow extends JFrame {
 		JButton btnNewButton_1 = new JButton("浏览");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				choiceFolder().ifPresent(inputFolder::setText);
+				choiceFolder().ifPresent(inputDir::setText);
 			}
 		});
 		GroupLayout gl_panel = new GroupLayout(panel);
@@ -133,7 +131,7 @@ public class MainWindow extends JFrame {
 								.addPreferredGap(ComponentPlacement.UNRELATED)
 								.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 										.addGroup(gl_panel.createSequentialGroup()
-												.addComponent(inputFolder, GroupLayout.DEFAULT_SIZE, 398,
+												.addComponent(inputDir, GroupLayout.DEFAULT_SIZE, 398,
 														Short.MAX_VALUE)
 												.addPreferredGap(ComponentPlacement.RELATED)
 												.addComponent(btnNewButton_1))
@@ -151,7 +149,7 @@ public class MainWindow extends JFrame {
 								.addComponent(labelInputXls).addComponent(btnNewButton_1_1))
 						.addPreferredGap(ComponentPlacement.RELATED)
 						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE).addComponent(labelInputFolder)
-								.addComponent(inputFolder, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								.addComponent(inputDir, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 										GroupLayout.PREFERRED_SIZE)
 								.addComponent(btnNewButton_1))
 						.addContainerGap(11, Short.MAX_VALUE)));

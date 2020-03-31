@@ -2,24 +2,37 @@ package net.colors_wind.fileremap;
 
 import java.awt.Desktop;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.PDPageContentStream.AppendMode;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType0Font;
+import org.apache.pdfbox.util.Matrix;
+
 public class FileMoveOperator {
-	private final File folder;
+	private final File dataDir;
 	private final File target;
 	private final AtomicInteger countSuccess = new AtomicInteger();
 
-	public FileMoveOperator(File folder) {
-		this.folder = folder;
-		this.target = new File(folder, new SimpleDateFormat("yyyy-MM-dd H:m:ss").format(new Date()));
+	public FileMoveOperator(File dataDir) {
+		this.dataDir = dataDir;
+		this.target = new File(dataDir, new SimpleDateFormat("yyyy-MM-dd HH-mm-ss").format(new Date()));
+		target.mkdirs();
 	}
 
 	public void start(MainWindow mainWindow, FormMap form) {
-		File[] files = folder.listFiles((dir, name) -> {
+		File[] files = dataDir.listFiles((dir, name) -> {
 			return name.toLowerCase().endsWith(".pdf");
 		});
 		mainWindow.printlnSafty(new StringBuilder("共找到 ").append(files.length).append(" 个文件, 重命名工作即将开始.").toString());
@@ -27,17 +40,48 @@ public class FileMoveOperator {
 			try {
 				StudentInfo studentInfo = form.getStudentInfo(file.getName());
 				File re = new File(target, studentInfo.getFileName());
-				file.renameTo(re);
+				savePdf(re, studentInfo);
 				mainWindow.printlnSafty(new StringBuilder("将 ").append(file.getName()).append(" 重命名为 ")
 						.append(re.getName()).toString());
 				countSuccess.incrementAndGet();
-			} catch (IllegalArgumentException e) {
-				mainWindow.printlnError("重命名文件时发送错误: ", e);
+			} catch (IllegalArgumentException | IOException e) {
+				mainWindow.printlnError("拷贝文件时发送错误: ", e);
 				e.printStackTrace();
-			}
+			} 
 		});
 		mainWindow.printlnSafty(new StringBuilder("成功重命名 ").append(countSuccess.get()).append(" 个文件, 失败 ")
 				.append(files.length - countSuccess.get()).append(" 个文件").toString());
+	}
+	
+	private static void savePdf(File file, StudentInfo studentInfo) throws IOException {
+		PDDocument pdf = new PDDocument();
+		PDFont formFont = PDType0Font.load(pdf, new FileInputStream(new File(".//SourceHanSansSC-Medium.ttf")), false);
+		List<PDDocument> toClose = new ArrayList<>(studentInfo.getEntrySet().size());
+		for(Entry<Integer, File> entry : studentInfo.getEntrySet()) {
+			PDDocument sub = PDDocument.load(entry.getValue());
+			for(PDPage page : sub.getPages()) {
+				PDPage operatePage = pdf.importPage(page);
+				if (Main.OPTIONS.isAddRawData()) {
+					PDPageContentStream content = new PDPageContentStream(pdf, operatePage, AppendMode.APPEND, true);
+					content.beginText();
+					content.setFont(formFont, 12);
+					content.setTextMatrix(Matrix.getTranslateInstance(2, operatePage.getBBox().getUpperRightY() - 15));
+					content.showText(entry.getValue().getName());
+					content.endText();
+					content.close();
+				}
+			}
+			toClose.add(sub);
+		}
+		pdf.save(file);
+		pdf.close();
+		toClose.forEach(t -> {
+			try {
+				t.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		});
 	}
 	
 	public void finish(MainWindow mainWindow) {

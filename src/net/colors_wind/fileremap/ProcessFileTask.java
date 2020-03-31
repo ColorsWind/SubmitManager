@@ -2,14 +2,18 @@ package net.colors_wind.fileremap;
 
 import java.io.File;
 
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
-@RequiredArgsConstructor
 public class ProcessFileTask implements Runnable {
 	private final MainWindow mainWindow;
 	private final File xlsFile;
 	private final File dataDir;
+	
+	public ProcessFileTask(MainWindow mainWindow) {
+		this.mainWindow = mainWindow;
+		this.xlsFile = new File(Main.OPTIONS.getInputXls());
+		this.dataDir = new File(Main.OPTIONS.getInputDir());
+	}
 
 	private Thread thread;
 
@@ -24,6 +28,7 @@ public class ProcessFileTask implements Runnable {
 			content.convert(form.getStudents(), mainWindow);
 			FileMoveOperator move = new FileMoveOperator(dataDir);
 			move.start(mainWindow, form);
+			move.finish(mainWindow);
 		} catch (InterruptedException e) {
 		} catch (Exception e) {
 			e.printStackTrace();

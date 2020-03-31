@@ -72,7 +72,7 @@ public class Options {
 	}
 	
 	public void loadFromWindow(MainWindow mainWindow, OutputOptions outputOption) {
-		this.inputDir = mainWindow.inputFolder.getText();
+		this.inputDir = mainWindow.inputDir.getText();
 		this.inputXls = mainWindow.inputXls.getText();
 		this.outputFile = outputOption.outputFile.getText();
 		this.addRawData = outputOption.checkboxAddRawData.isSelected();
@@ -80,7 +80,7 @@ public class Options {
 	}
 	
 	public void updateWindow(MainWindow mainWindow, OutputOptions outputOption) {
-		mainWindow.inputFolder.setText(this.inputDir);
+		mainWindow.inputDir.setText(this.inputDir);
 		mainWindow.inputXls.setText(this.inputXls);
 		outputOption.checkboxAddRawData.setSelected(addRawData);
 		outputOption.outputFile.setText(this.outputFile);
