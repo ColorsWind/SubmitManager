@@ -1,6 +1,7 @@
 package net.colors_wind.submitmanager;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
@@ -48,7 +49,8 @@ public class FormMap {
 	}
 	
 	public void inputFileList(File dir, MainWindow mainWindow) {
-		Arrays.stream(dir.listFiles(FileContentOperator.ALL_FILTER)).forEach(file -> {
+		FilenameFilter filter = Main.OPTIONS.isConvertImage() ? ImageOpeator.ALL_FILTER : ImageOpeator.PDF_FILTER; 
+		Arrays.stream(dir.listFiles(filter)).forEach(file -> {
 			try {
 				StudentInfo info = getStudentInfo(file.getName());
 				info.addFile(file);

@@ -51,6 +51,7 @@ public class Main {
 				}
 			}
 		});
+		
 	}
 
 	public static void centre(Window window) {

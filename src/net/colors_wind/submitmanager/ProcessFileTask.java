@@ -24,9 +24,9 @@ public class ProcessFileTask implements Runnable {
 			FormMap form = new FormMap();
 			form.inputForm(xlsFile, mainWindow);
 			form.inputFileList(dataDir, mainWindow);
-			FileContentOperator content = new FileContentOperator();
-			content.convert(form.getStudents(), mainWindow);
-			FileMoveOperator move = new FileMoveOperator(dataDir);
+			ImageOpeator content = new ImageOpeator();
+			content.start(form.getStudents(), mainWindow);
+			FileCombineOperator move = new FileCombineOperator(dataDir);
 			move.start(mainWindow, form);
 			move.finish(mainWindow);
 		} catch (InterruptedException e) {

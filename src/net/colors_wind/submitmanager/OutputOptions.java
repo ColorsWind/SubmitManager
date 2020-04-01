@@ -43,10 +43,10 @@ public class OutputOptions extends JDialog {
 	protected ButtonGroup conflictStrategy;
 	private JLabel lblNewLabel_1;
 	private JLabel lblNewLabel_2;
-	private JCheckBox checkboxCombine;
-	private JCheckBox checkboxTryCombine;
+	protected JCheckBox checkboxCombine;
+	protected JCheckBox checkboxImage;
 	protected JCheckBox checkboxAddRawData;
-	private JCheckBox moveInsteadCopy;
+	protected JCheckBox checkboxMove;
 
 	/**
 	 * Launch the application.
@@ -164,7 +164,6 @@ public class OutputOptions extends JDialog {
 			}
 			{
 				checkboxCombine = new JCheckBox("尝试合并多个文件");
-				checkboxCombine.setEnabled(false);
 				checkboxCombine.setSelected(true);
 				panel.add(checkboxCombine, "1, 4");
 			}
@@ -173,10 +172,10 @@ public class OutputOptions extends JDialog {
 				panel.add(radiobuttonKeepSmall, "2, 4");
 			}
 			{
-				checkboxTryCombine = new JCheckBox("尝试转换图片文件");
-				checkboxTryCombine.setEnabled(false);
-				checkboxTryCombine.setSelected(true);
-				panel.add(checkboxTryCombine, "1, 6");
+				checkboxImage = new JCheckBox("尝试转换图片文件");
+				checkboxImage.setEnabled(false);
+				checkboxImage.setSelected(true);
+				panel.add(checkboxImage, "1, 6");
 			}
 			{
 				radiobuttonKeepBig = new JRadioButton("保留序号较大的文件");
@@ -192,9 +191,9 @@ public class OutputOptions extends JDialog {
 				panel.add(radiobuttonCombine, "2, 8");
 			}
 			{
-				moveInsteadCopy = new JCheckBox("移动文件代替拷贝");
-				moveInsteadCopy.setEnabled(false);
-				panel.add(moveInsteadCopy, "1, 10");
+				checkboxMove = new JCheckBox("移动文件代替拷贝");
+				checkboxMove.setEnabled(false);
+				panel.add(checkboxMove, "1, 10");
 			}
 			{
 				radiobuttonNotModify = new JRadioButton("不处理保留原始文件");
