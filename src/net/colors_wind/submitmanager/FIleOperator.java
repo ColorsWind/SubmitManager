@@ -44,7 +44,7 @@ public class FIleOperator {
 				StudentInfo studentInfo = form.getStudentInfo(file.getName());
 				File re = new File(target, studentInfo.getFileName());
 				savePdf(re, studentInfo, font);
-				mainWindow.println(new StringBuilder("将 ").append(file.getName()).append(" 重命名为 ")
+				mainWindow.println(new StringBuilder(file.getName()).append(" -> ")
 						.append(re.getName()).toString());
 				countSuccess.incrementAndGet();
 			} catch (IllegalArgumentException | IOException e) {
@@ -100,6 +100,7 @@ public class FIleOperator {
 	}
 	
 	public void finish(MainWindow mainWindow) {
+		mainWindow.println("-------- File Opeation Completed --------");
 		Desktop desktop = Desktop.getDesktop();
 		mainWindow.println(new StringBuilder("保存文件到: ").append(target.getAbsolutePath()).toString());
 		try {
@@ -108,6 +109,7 @@ public class FIleOperator {
 			mainWindow.printlnError("无法打开资源管理器, 请手动查看文件.", e);
 			e.printStackTrace();
 		}
+		mainWindow.println("\n\n\n\n");
 	}
 
 }

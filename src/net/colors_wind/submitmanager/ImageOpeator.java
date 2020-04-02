@@ -52,6 +52,10 @@ public class ImageOpeator {
 			});
 		});
 	}
+	
+	public void finish(MainWindow mainWindow) {
+		mainWindow.println("-------- Image Opeation Completed --------");
+	}
 
 	private static File process(File file) throws IOException {
 		BufferedImage image = ImageIO.read(file);
@@ -67,4 +71,6 @@ public class ImageOpeator {
 		pdf.close();
 		return pdfFile;
 	}
+	
+
 }

@@ -65,6 +65,10 @@ public class FormMap {
 			}
 		});
 	}
+	
+	public void finish(MainWindow mainWindow) {
+		mainWindow.println("-------- Import Form Completed --------");
+	}
 
 	public StudentInfo getStudentInfo(@NonNull String fileName) throws IllegalArgumentException {
 		int indexOf;
