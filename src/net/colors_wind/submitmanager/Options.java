@@ -129,7 +129,7 @@ public class Options {
 				e.printStackTrace();
 			}
 		}
-		InputStream in = Main.class.getResourceAsStream("\\SourceHanSansSC-Medium.ttf");
+		InputStream in = Main.class.getResourceAsStream("/com/github/adobe_fonts/SourceHanSansSC-Medium.ttf");
 		try {
 			return new TTFParser().parse(in);
 		} catch (NullPointerException | IOException e) {
