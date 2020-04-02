@@ -10,6 +10,7 @@ import java.net.URL;
 import java.net.URLDecoder;
 
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 public class Main {
@@ -17,28 +18,37 @@ public class Main {
 	protected static volatile MainWindow mainWindow;
 	protected static volatile OutputOptions outputOptions;
 	protected static volatile PermissionRequire permissionRequire;
-	
-	public static void addPermission() {
+
+	public static boolean addPermission() {
 		File xls = new File(OPTIONS.getInputXls());
 		File dir = new File(OPTIONS.getInputDir());
+		boolean[] success = new boolean[4];
 		if (xls.exists()) {
-			xls.setWritable(true, false);
-			xls.setReadable(true, false);
+			success[0] = xls.setWritable(true, false);
+			success[1] = xls.setReadable(true, false);
 		}
 		if (dir.exists()) {
-			dir.setWritable(true, false);
-			dir.setReadable(true, false);
+			success[2] = dir.setWritable(true, false);
+			success[3] = dir.setReadable(true, false);
 		}
+		for (boolean b : success) {
+			if (!b)
+				return false;
+		}
+		return true;
 	}
-	
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		for(String arg : args) {
+		for (String arg : args) {
 			if (arg.contains("givepermission")) {
-				addPermission();
+				if (addPermission()) {
+					JOptionPane.showMessageDialog(null, "成功配置文件权限", "信息", JOptionPane.OK_OPTION);
+				} else {
+					JOptionPane.showMessageDialog(null, "配置文件权限失败, 请尝试手动配置.", "错误", JOptionPane.ERROR_MESSAGE);
+				}
 				System.exit(0);
 				return;
 			}
