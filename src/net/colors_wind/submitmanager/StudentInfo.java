@@ -1,24 +1,35 @@
 package net.colors_wind.submitmanager;
 
 import java.io.File;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.poi.ss.usermodel.Row;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 @ToString
-@Getter
 @RequiredArgsConstructor
-public class StudentInfo {
-
+public class StudentInfo implements Comparable<StudentInfo> {
+	public static final Comparator<StudentInfo> ASCEND = Comparator.comparing(StudentInfo::getIndex);
+	public static final Comparator<StudentInfo> DESCEND = Collections.reverseOrder(ASCEND);
+	@Getter
 	private final int index;
+	@Getter
 	private final String fileName;
+	@Getter(AccessLevel.PROTECTED)
 	private final TreeMap<Integer, File> fileMap = new TreeMap<>();
+	
+	public String getFileNameLowerCase() {
+		return fileName.toLowerCase();
+	}
  
 	public static StudentInfo fromRowData(Row row)
 			throws NullPointerException, NumberFormatException, ArrayIndexOutOfBoundsException {
@@ -59,6 +70,13 @@ public class StudentInfo {
 	protected Set<Entry<Integer, File>> getEntrySet() {
 		return fileMap.entrySet();
 	}
+
+	@Override
+	public int compareTo(@NonNull StudentInfo o) {
+		return Integer.compare(this.index, o.index);
+	}
+	
+	
 
 
 }

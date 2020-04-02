@@ -6,6 +6,7 @@ import java.awt.Toolkit;
 import java.awt.Window;
 import java.io.IOException;
 
+import javax.swing.JDialog;
 import javax.swing.UIManager;
 
 public class Main {
@@ -33,6 +34,7 @@ public class Main {
 				mainWindow = new MainWindow();
 				centre(mainWindow);
 				outputOptions = new OutputOptions();
+				outputOptions.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 				centre(outputOptions);
 				OPTIONS.updateWindow(mainWindow, outputOptions);
 				mainWindow.setVisible(true);

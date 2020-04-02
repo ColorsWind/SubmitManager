@@ -15,8 +15,6 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.RowSpec;
 
-import lombok.NonNull;
-
 import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.JCheckBox;
@@ -40,7 +38,9 @@ public class OutputOptions extends JDialog {
 	protected JRadioButton radiobuttonKeepSmall;
 	protected JRadioButton radiobuttonCombine;
 	protected JRadioButton radiobuttonNotModify;
+	protected JRadioButton radiobuttonAddPrefix;
 	protected ButtonGroup conflictStrategy;
+	
 	private JLabel lblNewLabel_1;
 	private JLabel lblNewLabel_2;
 	protected JCheckBox checkboxCombine;
@@ -48,18 +48,6 @@ public class OutputOptions extends JDialog {
 	protected JCheckBox checkboxAddRawData;
 	protected JCheckBox checkboxMove;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			OutputOptions dialog = new OutputOptions();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	/**
 	 * Create the dialog.
@@ -187,7 +175,6 @@ public class OutputOptions extends JDialog {
 			}
 			{
 				radiobuttonCombine = new JRadioButton("按序号从小到大合并");
-				radiobuttonCombine.setSelected(true);
 				panel.add(radiobuttonCombine, "2, 8");
 			}
 			{
@@ -199,44 +186,18 @@ public class OutputOptions extends JDialog {
 				radiobuttonNotModify = new JRadioButton("不处理保留原始文件");
 				panel.add(radiobuttonNotModify, "2, 10");
 			}
+			{
+				radiobuttonAddPrefix = new JRadioButton("冲突的文件添加后缀");
+				radiobuttonAddPrefix.setSelected(true);
+				panel.add(radiobuttonAddPrefix, "2, 12");
+			}
 			conflictStrategy = new ButtonGroup();
 			conflictStrategy.add(radiobuttonCombine);
 			conflictStrategy.add(radiobuttonKeepBig);
 			conflictStrategy.add(radiobuttonKeepSmall);
 			conflictStrategy.add(radiobuttonNotModify);
+			conflictStrategy.add(radiobuttonAddPrefix);
 		}
 	}
 	
-	public ConflictStrategy getConflictStrategy() {
-		if (radiobuttonCombine.isSelected()) {
-			return ConflictStrategy.COMBINE_BY_ASCEND;
-		} else if (radiobuttonKeepSmall.isSelected()) {
-			return ConflictStrategy.KEEP_INDEX_SMALL;
-		} else if (radiobuttonKeepBig.isSelected()) {
-			return ConflictStrategy.KEEP_INDEX_BIG;
-		} else if (radiobuttonNotModify.isSelected()) {
-			return ConflictStrategy.DO_NOT_MODIFY;
-		}
-		//won't happen
-		return ConflictStrategy.COMBINE_BY_ASCEND;
-	}
-	
-	public void setConflictStrategy(@NonNull ConflictStrategy strategy) {
-		switch(strategy) {
-		case COMBINE_BY_ASCEND:
-			this.radiobuttonCombine.setSelected(true);
-			break;
-		case DO_NOT_MODIFY:
-			this.radiobuttonNotModify.setSelected(true);
-			break;
-		case KEEP_INDEX_BIG:
-			this.radiobuttonKeepBig.setEnabled(true);
-			break;
-		case KEEP_INDEX_SMALL:
-			this.radiobuttonKeepSmall.setEnabled(true);
-			break;
-		default:
-			break;
-		}
-	}
 }

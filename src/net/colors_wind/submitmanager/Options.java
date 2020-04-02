@@ -12,6 +12,7 @@ import java.io.Reader;
 import java.io.Writer;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import org.apache.fontbox.ttf.TTFParser;
 import org.apache.fontbox.ttf.TrueTypeFont;
@@ -50,9 +51,9 @@ public class Options {
 			this.setInputXls(map.get("InputXls").toString());
 			this.setOutputFile(map.get("OutputFile").toString());
 			this.setAddRawData(Boolean.parseBoolean(map.get("AddRawData").toString()));
-			this.setTryToCombine(Boolean.parseBoolean(map.get("TryToCombine").toString()));
-			this.setConvertImage(Boolean.parseBoolean(map.get("ConvertImage").toString()));
-			this.setMoveInsteadCopy(Boolean.parseBoolean(map.get("MoveInsteadCopy").toString()));
+			this.setTryToCombine(Boolean.parseBoolean(Objects.toString(map.get("TryToCombine"))));
+			this.setConvertImage(Boolean.parseBoolean(Objects.toString(map.get("ConvertImage"))));
+			this.setMoveInsteadCopy(Boolean.parseBoolean(Objects.toString(map.get("MoveInsteadCopy"))));
 			this.setStrategy(ConflictStrategy.getStrategy(map.get("ConflictStrategy").toString()).orElse(strategy));
 			reader.close();
 			in.close();
@@ -95,18 +96,23 @@ public class Options {
 		this.inputDir = mainWindow.inputDir.getText();
 		this.inputXls = mainWindow.inputXls.getText();
 		this.outputFile = outputOption.outputFile.getText();
-		this.strategy = outputOption.getConflictStrategy();
+		this.strategy = ConflictStrategy.getSelectConflictStrategy();
 		this.addRawData = outputOption.checkboxAddRawData.isSelected();
 		this.tryToCombine = outputOption.checkboxCombine.isSelected();
 		this.convertImage = outputOption.checkboxImage.isSelected();
 		this.moveInsteadCopy = outputOption.checkboxMove.isSelected();
 	}
 	
+	/**
+	 * EDT Thread only
+	 * @param mainWindow
+	 * @param outputOption
+	 */
 	public void updateWindow(MainWindow mainWindow, OutputOptions outputOption) {
 		mainWindow.inputDir.setText(this.inputDir);
 		mainWindow.inputXls.setText(this.inputXls);
 		outputOption.outputFile.setText(this.outputFile);
-		outputOption.setConflictStrategy(strategy);
+		strategy.setSelect(true);
 		outputOption.checkboxAddRawData.setSelected(addRawData);
 		outputOption.checkboxCombine.setSelected(tryToCombine);
 		outputOption.checkboxImage.setSelected(convertImage);

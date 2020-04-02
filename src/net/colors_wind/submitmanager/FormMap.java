@@ -2,8 +2,12 @@ package net.colors_wind.submitmanager;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -14,11 +18,14 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class FormMap {
+	@Getter(AccessLevel.PROTECTED)
 	private final ConcurrentMap<Integer, StudentInfo> data = new ConcurrentHashMap<>();
 
 	private void inputForm0(@NonNull File file) throws Exception {
@@ -34,8 +41,6 @@ public class FormMap {
 		}
 		excel.close();
 	}
-	
-	
 
 	public void inputForm(@NonNull File file, @NonNull MainWindow mainWindow) throws InterruptedException {
 		try {
@@ -114,5 +119,11 @@ public class FormMap {
 
 	public Collection<StudentInfo> getStudents() {
 		return data.values();
+	}
+	
+	public List<StudentInfo> getStudentsOrder(Comparator<StudentInfo> comparator) {
+		ArrayList<StudentInfo> studentsOrder = new ArrayList<>(getStudents());
+		Collections.sort(studentsOrder, comparator);
+		return studentsOrder;
 	}
 }
