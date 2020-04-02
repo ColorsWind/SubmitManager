@@ -195,6 +195,11 @@ public class OutputOptions extends JDialog {
 			conflictStrategy.add(radiobuttonKeepSmall);
 			conflictStrategy.add(radiobuttonNotModify);
 			conflictStrategy.add(radiobuttonAddPrefix);
+			ConflictStrategy.COMBINE_BY_ASCEND.setButton(this.radiobuttonCombine);
+			ConflictStrategy.ADD_PREFIX.setButton(this.radiobuttonAddPrefix);
+			ConflictStrategy.DO_NOT_MODIFY.setButton(this.radiobuttonNotModify);
+			ConflictStrategy.KEEP_INDEX_SMALL.setButton(this.radiobuttonKeepSmall);
+			ConflictStrategy.KEEP_INDEX_BIG.setButton(this.radiobuttonKeepBig);
 		}
 	}
 	
