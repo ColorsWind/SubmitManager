@@ -48,14 +48,16 @@ public class ProcessFileTask implements Runnable {
 		if (xlsFile == null || !xlsFile.exists()) {
 			mainWindow.println("表格文件不存在, 请重新选择.");
 			return;
-		}
+		} 
 		if (dataDir == null || !dataDir.exists()) {
 			mainWindow.println("输入文件夹不存在, 请重新选择.");
 			return;
 		}
-		thread = new Thread(this, "handleFile");
-		thread.join();
-		thread.start();
+		if (PermissionRequire.checkPermission(xlsFile) && PermissionRequire.checkPermission(dataDir)) {
+			thread = new Thread(this, "handleFile");
+			thread.join();
+			thread.start();
+		}
 	}
 	
 	public void cancel() {
