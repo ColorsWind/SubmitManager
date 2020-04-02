@@ -99,6 +99,7 @@ public class ProcessFileTask implements Runnable {
 		}
 	}
 	
+	
 	public void cancel() {
 		if (thread == null || !thread.isAlive()) {
 			mainWindow.println("没有正在进行的工作.");

@@ -35,6 +35,7 @@ public class MainWindow extends JFrame {
 	private JButton buttonStop;
 	private JScrollPane scrollBar;
 	private JTextArea outputArea;
+	protected ProcessFileTask task;
 
 	
 
@@ -65,6 +66,13 @@ public class MainWindow extends JFrame {
 		});
 
 		buttonStop = new JButton("停止");
+		buttonStop.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (task != null) {
+					task.cancel();
+				}
+			}
+		});
 		buttonStop.setEnabled(false);
 
 		buttonStart = new JButton("开始");
@@ -72,7 +80,8 @@ public class MainWindow extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				Main.OPTIONS.loadFromWindow(Main.mainWindow, Main.outputOptions);
 				Main.OPTIONS.updateFileWrap(MainWindow.this);
-				new ProcessFileTask(MainWindow.this).start();
+				task = new ProcessFileTask(MainWindow.this);
+				task.start();
 			}
 		});
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
@@ -208,6 +217,7 @@ public class MainWindow extends JFrame {
 	}
 
 	public void handleTaskStart() {
+		this.progressBar.setValue(0);
 		this.buttonStart.setEnabled(false);
 		this.buttonStop.setEnabled(true);
 	}
