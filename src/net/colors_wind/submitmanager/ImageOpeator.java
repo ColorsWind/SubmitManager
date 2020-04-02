@@ -6,6 +6,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.imageio.ImageIO;
 
@@ -35,7 +36,9 @@ public class ImageOpeator {
 	};
 
 	
-	public void start(Collection<StudentInfo> students, MainWindow mainWindow) {
+	public void start(Collection<StudentInfo> students, MainWindow mainWindow, ProcessFileTask task) {
+		final AtomicInteger count = new AtomicInteger();
+		final int total = students.size();
 		students.parallelStream().forEach(studentInfo -> {
 			studentInfo.getEntrySet().forEach(entry -> {
 				String rawName = entry.getValue().getName();
@@ -48,13 +51,19 @@ public class ImageOpeator {
 								e);
 						e.printStackTrace();
 					}
+					publish(task, count.incrementAndGet(), total);
 				}
 			});
 		});
 	}
 	
-	public void finish(MainWindow mainWindow) {
+	private void publish(ProcessFileTask task, int process, int total) {
+		task.publishImage(process, total);
+	}
+
+	public void finish(MainWindow mainWindow, ProcessFileTask task) {
 		mainWindow.println("-------- Image Opeation Completed --------");
+		task.publishImage(1, 1);
 	}
 
 	private static File process(File file) throws IOException {

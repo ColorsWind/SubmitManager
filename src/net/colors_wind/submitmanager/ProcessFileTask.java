@@ -1,7 +1,9 @@
 package net.colors_wind.submitmanager;
 
 import java.io.File;
+import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.swing.SwingUtilities;
 import lombok.SneakyThrows;
 
 public class ProcessFileTask implements Runnable {
@@ -17,6 +19,7 @@ public class ProcessFileTask implements Runnable {
 
 	private Thread thread;
 
+
 	@Override
 	public void run() {
 		mainWindow.handleTaskStart();
@@ -25,15 +28,19 @@ public class ProcessFileTask implements Runnable {
 			form.inputForm(xlsFile, mainWindow);
 			form.inputFileList(dataDir, mainWindow);
 			form.finish(mainWindow);
+			checkStop();
 			if (Main.OPTIONS.isConvertImage()) {
 				ImageOpeator image = new ImageOpeator();
-				image.start(form.getStudents(), mainWindow);
-				image.finish(mainWindow);
+				image.start(form.getStudents(), mainWindow, this);
+				image.finish(mainWindow, this);
+				checkStop();
 			}
-			Main.OPTIONS.getStrategy().resolveConflict(mainWindow, form);
-			ConflictStrategy.finish(mainWindow);
+			Main.OPTIONS.getStrategy().resolveConflict(mainWindow, this, form);
+			ConflictStrategy.finish(mainWindow, this);
+			checkStop();
 			FIleOperator fileOperator = new FIleOperator(dataDir);
-			fileOperator.start(mainWindow, form);
+			fileOperator.start(mainWindow, form, this);
+			this.publish(100);
 			fileOperator.finish(mainWindow);
 		} catch (InterruptedException e) {
 		} catch (Exception e) {
@@ -41,6 +48,38 @@ public class ProcessFileTask implements Runnable {
 		} finally {
 			mainWindow.handleTaskStop();
 		}
+	}
+	
+	public void checkStop() throws InterruptedException {
+		if (thread.isInterrupted()) {
+			throw new InterruptedException();
+		}
+	}
+	
+	private final AtomicInteger process = new AtomicInteger();
+	public void publish(int i) {
+		if (process.getAndSet(i) != i) {
+			SwingUtilities.invokeLater(() -> mainWindow.progressBar.setValue(i));
+		}
+	}
+	public static final int PROGESS_FORM = 20;
+	public static final int PROGRESS_IMAGE = 25;
+	public static final int PROGRESS_CONFLICT = 10;
+	public static final int PROGRESS_FILE = 45;
+	
+	public void publishImage(int processed, int total) {
+		double d = PROGRESS_IMAGE * processed / (double)total;
+		publish(PROGESS_FORM + (int)d);
+	}
+	
+	public void publishConflict(int processed, int total) {
+		double d = PROGRESS_CONFLICT * processed / (double)total;
+		publish(PROGESS_FORM + PROGRESS_IMAGE + (int)d);
+	}
+	
+	public void publishFile(int processed, int total) {
+		double d = PROGRESS_FILE * processed / (double)total;
+		publish(PROGESS_FORM + PROGRESS_IMAGE + PROGRESS_CONFLICT + (int)d);
 	}
 	
 	@SneakyThrows
@@ -66,5 +105,6 @@ public class ProcessFileTask implements Runnable {
 		}
 		thread.interrupt();
 	}
+
 
 }

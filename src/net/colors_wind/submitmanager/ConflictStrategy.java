@@ -104,7 +104,7 @@ public enum ConflictStrategy {
 		return origin.values().toArray(new StudentInfo[origin.size()]);
 	}
 	
-	public StudentInfo[] resolveConflict(MainWindow mainWindow, FormMap form) {
+	public StudentInfo[] resolveConflict(MainWindow mainWindow, ProcessFileTask task, FormMap form) {
 		return this.func.apply(mainWindow, form);
 	}
 	
@@ -138,8 +138,10 @@ public enum ConflictStrategy {
 		button.setSelected(select);
 	}
 
-	public static void finish(MainWindow mainWindow) {
+	public static void finish(MainWindow mainWindow, ProcessFileTask task) {
 		mainWindow.println("-------- Resolving Conflict Completed --------");
+		task.publishConflict(1, 1);
+		
 	}
 
 }

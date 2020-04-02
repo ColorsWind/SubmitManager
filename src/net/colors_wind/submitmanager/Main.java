@@ -65,7 +65,6 @@ public class Main {
 				permissionRequire.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 				OPTIONS.updateWindow(mainWindow, outputOptions);
 				mainWindow.setVisible(true);
-				permissionRequire.show("test");
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.exit(-1);

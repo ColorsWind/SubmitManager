@@ -33,12 +33,13 @@ public class FIleOperator {
 	}
 
 
-	public void start(MainWindow mainWindow, FormMap form) {
+	public void start(MainWindow mainWindow, FormMap form, ProcessFileTask task) {
 		File[] files = dataDir.listFiles((dir, name) -> {
 			return name.toLowerCase().endsWith(".pdf");
 		});
 		TrueTypeFont font = Main.OPTIONS.isAddRawData() ? Main.OPTIONS.loadFont(mainWindow) : null;
 		mainWindow.println(new StringBuilder("共找到 ").append(files.length).append(" 个文件, 重命名工作即将开始.").toString());
+		final int total = files.length;
 		Arrays.stream(files).parallel().forEach(file -> {
 			try {
 				StudentInfo studentInfo = form.getStudentInfo(file.getName());
@@ -46,7 +47,7 @@ public class FIleOperator {
 				savePdf(re, studentInfo, font);
 				mainWindow.println(new StringBuilder(file.getName()).append(" -> ")
 						.append(re.getName()).toString());
-				countSuccess.incrementAndGet();
+				task.publishFile(countSuccess.incrementAndGet(), total);;
 			} catch (IllegalArgumentException | IOException e) {
 				mainWindow.printlnError("拷贝文件时发送错误: ", e);
 				e.printStackTrace();

@@ -129,10 +129,10 @@ public class Options {
 				e.printStackTrace();
 			}
 		}
-		InputStream in = Main.class.getResourceAsStream("SourceHanSansSC-Medium.ttf");
+		InputStream in = Main.class.getResourceAsStream("\\SourceHanSansSC-Medium.ttf");
 		try {
 			return new TTFParser().parse(in);
-		} catch (IOException e) {
+		} catch (NullPointerException | IOException e) {
 			mainWindow.printlnError("读取内置字体时出现异常: ", e);
 			e.printStackTrace();
 		}

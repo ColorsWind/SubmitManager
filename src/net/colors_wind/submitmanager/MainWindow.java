@@ -30,7 +30,7 @@ public class MainWindow extends JFrame {
 	private JPanel contentPane;
 	protected JTextField inputDir;
 	protected JTextField inputXls;
-	private JProgressBar progressBar;
+	protected JProgressBar progressBar;
 	private JButton buttonStart;
 	private JButton buttonStop;
 	private JScrollPane scrollBar;
@@ -55,7 +55,7 @@ public class MainWindow extends JFrame {
 		JPanel panel_1 = new JPanel();
 		contentPane.add(panel_1, BorderLayout.SOUTH);
 
-		progressBar = new JProgressBar();
+		progressBar = new JProgressBar(0, 100);
 
 		JButton buttonAdvanceOption = new JButton("高级选项");
 		buttonAdvanceOption.addActionListener(new ActionListener() {
