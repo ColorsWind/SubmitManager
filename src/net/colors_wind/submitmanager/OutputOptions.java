@@ -161,7 +161,6 @@ public class OutputOptions extends JDialog {
 			}
 			{
 				checkboxImage = new JCheckBox("尝试转换图片文件");
-				checkboxImage.setEnabled(false);
 				checkboxImage.setSelected(true);
 				panel.add(checkboxImage, "1, 6");
 			}
@@ -179,7 +178,6 @@ public class OutputOptions extends JDialog {
 			}
 			{
 				checkboxMove = new JCheckBox("移动文件代替拷贝");
-				checkboxMove.setEnabled(false);
 				panel.add(checkboxMove, "1, 10");
 			}
 			{

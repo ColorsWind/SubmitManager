@@ -20,13 +20,13 @@ import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.apache.pdfbox.util.Matrix;
 
-public class FileCombineOperator {
+public class FIleOperator {
 	private final File dataDir;
 	private final File target;
 
 	private final AtomicInteger countSuccess = new AtomicInteger();
 
-	public FileCombineOperator(File dataDir) {
+	public FIleOperator(File dataDir) {
 		this.dataDir = dataDir;
 		this.target = new File(dataDir, new SimpleDateFormat("yyyy-MM-dd HH-mm-ss").format(new Date()));
 		target.mkdirs();
@@ -57,8 +57,12 @@ public class FileCombineOperator {
 	}
 	
 	private static void savePdf(File file, StudentInfo studentInfo, TrueTypeFont font) throws IOException {
+		if (Main.OPTIONS.isMoveInsteadCopy() && font == null && studentInfo.getEntrySet().size() == 1) {
+			studentInfo.getFileMap().firstEntry().getValue().renameTo(file);
+			return;
+		}
 		PDDocument pdf = new PDDocument();
-		List<PDDocument> toClose = new ArrayList<>(studentInfo.getEntrySet().size()); 
+		List<PDDocument> toClose = new ArrayList<>(studentInfo.getEntrySet().size());
 		if (font == null) {
 			for(Entry<Integer, File> entry : studentInfo.getEntrySet()) {
 				PDDocument sub = PDDocument.load(entry.getValue());

@@ -26,7 +26,7 @@ public class ProcessFileTask implements Runnable {
 			form.inputFileList(dataDir, mainWindow);
 			ImageOpeator content = new ImageOpeator();
 			content.start(form.getStudents(), mainWindow);
-			FileCombineOperator move = new FileCombineOperator(dataDir);
+			FIleOperator move = new FIleOperator(dataDir);
 			move.start(mainWindow, form);
 			move.finish(mainWindow);
 		} catch (InterruptedException e) {
