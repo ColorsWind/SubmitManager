@@ -37,7 +37,7 @@ public class Options {
 	private volatile boolean convertImage = true;
 	private volatile boolean moveInsteadCopy = true;
 	@NonNull
-	private volatile ConflictStrategy strategy = ConflictStrategy.COMBINE_BY_ASCEND;
+	private volatile ConflictStrategy strategy = ConflictStrategy.ADD_PREFIX;
 
 
 	public void loadFromFile() throws IOException {
@@ -47,14 +47,14 @@ public class Options {
 			InputStream in = new FileInputStream(file);
 			Reader reader = new InputStreamReader(in, "utf8");
 			Map<String, Object> map = yaml.load(reader);
-			this.setInputDir(map.get("InputDir").toString());
-			this.setInputXls(map.get("InputXls").toString());
-			this.setOutputFile(map.get("OutputFile").toString());
+			this.setInputDir(Objects.toString(map.get("InputDir")));
+			this.setInputXls(Objects.toString(map.get("InputXls")));
+			this.setOutputFile(Objects.toString(map.get("OutputFile")));
 			this.setAddRawData(Boolean.parseBoolean(map.get("AddRawData").toString()));
 			this.setTryToCombine(Boolean.parseBoolean(Objects.toString(map.get("TryToCombine"))));
 			this.setConvertImage(Boolean.parseBoolean(Objects.toString(map.get("ConvertImage"))));
 			this.setMoveInsteadCopy(Boolean.parseBoolean(Objects.toString(map.get("MoveInsteadCopy"))));
-			this.setStrategy(ConflictStrategy.getStrategy(map.get("ConflictStrategy").toString()).orElse(strategy));
+			this.setStrategy(ConflictStrategy.getStrategy(Objects.toString(map.get("ConflictStrategy"))).orElse(strategy));
 			reader.close();
 			in.close();
 		}
