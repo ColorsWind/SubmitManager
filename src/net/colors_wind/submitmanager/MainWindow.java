@@ -112,9 +112,11 @@ public class MainWindow extends JFrame {
 		JLabel labelInputFolder = new JLabel("输入数据");
 
 		inputDir = new JTextField("");
+		labelInputFolder.setLabelFor(inputDir);
 		inputDir.setColumns(10);
 
 		inputXls = new JTextField("");
+		labelInputXls.setLabelFor(inputXls);
 		inputXls.setColumns(10);
 
 		JButton btnNewButton_1 = new JButton("浏览");

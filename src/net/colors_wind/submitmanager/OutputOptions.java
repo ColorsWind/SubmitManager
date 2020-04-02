@@ -70,6 +70,7 @@ public class OutputOptions extends JDialog {
 		}
 		
 		outputFile = new JTextField();
+		lblNewLabel.setLabelFor(outputFile);
 		outputFile.setText("{7}-{8}.pdf");
 		outputFile.setColumns(10);
 		
