@@ -7,6 +7,12 @@
 	<artifactId>SubmitManager</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<resources>
+			<resource>
+				<directory>resource</directory>
+            </resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
@@ -60,6 +66,12 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
+		    <groupId>com.jgoodies</groupId>
+		    <artifactId>jgoodies-forms</artifactId>
+		    <version>1.8.0</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.yaml</groupId>
 			<artifactId>snakeyaml</artifactId>
 			<version>1.23</version>
@@ -84,11 +96,5 @@
 		    <version>4.1.2</version>
 			<scope>compile</scope>	
 		</dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-		    <version>4.1.2</version>
-			<scope>compile</scope>	
-        </dependency>
 	</dependencies>
 </project>	
