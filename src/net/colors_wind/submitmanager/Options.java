@@ -25,7 +25,11 @@ import lombok.NonNull;
 @Data
 @NoArgsConstructor
 public class Options {
-	public static final String CONF_FILE_NAME = "./fileremap.yml";
+	public static final String CONF_FILE_NAME;
+	static {
+		File userDir = new File(System.getProperties().getProperty("user.dir"));
+		CONF_FILE_NAME = new File(userDir, "submitmanager.yml").getAbsolutePath();
+	}
 	@NonNull
 	private volatile String inputXls = "";
 	@NonNull
@@ -64,7 +68,7 @@ public class Options {
 		try {
 			updateFile();
 		} catch (IOException e) {
-			mainWindow.printlnError("保存配置时出现异常: ", e);
+			mainWindow.printlnError("保存配置时出现异常", e);
 			e.printStackTrace();
 		}
 	}
@@ -125,7 +129,7 @@ public class Options {
 			try {
 				return new TTFParser().parse(file);
 			} catch (IOException e) {
-				mainWindow.printlnError("读取自定义字体时出现异常: ", e);
+				mainWindow.printlnError("读取自定义字体时出现异常", e);
 				e.printStackTrace();
 			}
 		}
@@ -133,7 +137,7 @@ public class Options {
 		try {
 			return new TTFParser().parse(in);
 		} catch (NullPointerException | IOException e) {
-			mainWindow.printlnError("读取内置字体时出现异常: ", e);
+			mainWindow.printlnError("读取内置字体时出现异常", e);
 			e.printStackTrace();
 		}
 		return null;
