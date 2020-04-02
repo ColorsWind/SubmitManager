@@ -27,7 +27,7 @@ import lombok.NonNull;
 public class Options {
 	public static final String CONF_FILE_NAME;
 	static {
-		File userDir = new File(System.getProperties().getProperty("user.dir"));
+		File userDir = new File(System.getProperties().getProperty("user.home"));
 		CONF_FILE_NAME = new File(userDir, "submitmanager.yml").getAbsolutePath();
 	}
 	@NonNull
