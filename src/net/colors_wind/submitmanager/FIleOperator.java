@@ -3,6 +3,8 @@ package net.colors_wind.submitmanager;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.CopyOption;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,8 +55,8 @@ public class FIleOperator {
 	}
 	
 	private static void savePdf(File targetFile, StudentInfo studentInfo, TrueTypeFont font) throws IOException {
-		if (Main.OPTIONS.isMoveInsteadCopy() && font == null && studentInfo.getEntrySet().size() == 1) {
-			studentInfo.getFileMap().firstEntry().getValue().renameTo(targetFile);
+		if (font == null && studentInfo.getEntrySet().size() == 1) {
+			Files.copy(studentInfo.getFileMap().firstEntry().getValue().toPath(), targetFile.toPath(), new CopyOption[0]);
 			return;
 		}
 		PDDocument pdf = new PDDocument();
