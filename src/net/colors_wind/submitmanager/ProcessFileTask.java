@@ -25,24 +25,30 @@ public class ProcessFileTask implements Runnable {
 		mainWindow.handleTaskStart();
 		try {
 			FormMap form = new FormMap();
+			form.preStartForm(mainWindow, this);
 			form.inputForm(xlsFile, mainWindow);
-			form.finishForm(mainWindow);
+			checkStop();
+			form.preStartFiles(mainWindow, this);
+			form.finishForm(mainWindow, this);
+			checkStop();
 			form.inputFiles(dataDir, mainWindow);
-			form.finishFiles(mainWindow);
+			form.finishFiles(mainWindow, this);
 			checkStop();
 			if (Main.OPTIONS.isConvertImage()) {
 				ImageOpeator image = new ImageOpeator();
+				image.preStart(mainWindow, this);
 				image.start(form.getStudents(), mainWindow, this);
 				image.finish(mainWindow, this);
 				checkStop();
 			}
+			ConflictStrategy.preStart(mainWindow, this);
 			Main.OPTIONS.getStrategy().resolveConflict(mainWindow, this, form);
 			ConflictStrategy.finish(mainWindow, this);
 			checkStop();
 			FIleOperator fileOperator = new FIleOperator(dataDir);
+			fileOperator.preStart(mainWindow, this);
 			fileOperator.start(mainWindow, form, this);
-			this.publish(100);
-			fileOperator.finish(mainWindow);
+			fileOperator.finish(mainWindow, this);
 		} catch (InterruptedException e) {
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -63,25 +69,11 @@ public class ProcessFileTask implements Runnable {
 			SwingUtilities.invokeLater(() -> mainWindow.progressBar.setValue(i));
 		}
 	}
-	public static final int PROGESS_FORM = 20;
-	public static final int PROGRESS_IMAGE = 25;
-	public static final int PROGRESS_CONFLICT = 10;
-	public static final int PROGRESS_FILE = 45;
 	
-	public void publishImage(int processed, int total) {
-		double d = PROGRESS_IMAGE * processed / (double)total;
-		publish(PROGESS_FORM + (int)d);
+	public void publish(int processed, int total) {
+		publish(100 * processed / total);
 	}
 	
-	public void publishConflict(int processed, int total) {
-		double d = PROGRESS_CONFLICT * processed / (double)total;
-		publish(PROGESS_FORM + PROGRESS_IMAGE + (int)d);
-	}
-	
-	public void publishFile(int processed, int total) {
-		double d = PROGRESS_FILE * processed / (double)total;
-		publish(PROGESS_FORM + PROGRESS_IMAGE + PROGRESS_CONFLICT + (int)d);
-	}
 	
 	@SneakyThrows
 	public void start() {

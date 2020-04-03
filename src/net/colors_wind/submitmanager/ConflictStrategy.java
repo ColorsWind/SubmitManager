@@ -140,8 +140,13 @@ public enum ConflictStrategy {
 
 	public static void finish(MainWindow mainWindow, ProcessFileTask task) {
 		mainWindow.println("-------- Resolving Conflict Completed --------");
-		task.publishConflict(1, 1);
+		task.publish(100);
 		
+	}
+
+	public static void preStart(MainWindow mainWindow, ProcessFileTask task) {
+		task.publish(0);
+		mainWindow.println("-------- Resolving Conflict Start --------");
 	}
 
 }

@@ -53,8 +53,14 @@ public class FormMap {
 		}
 	}
 	
-	public void finishForm(MainWindow mainWindow) {
+	public void preStartForm(MainWindow mainWindow, ProcessFileTask task) {
+		mainWindow.println("-------- Import Form Start --------");
+		task.publish(0);
+	}
+	
+	public void finishForm(MainWindow mainWindow, ProcessFileTask task) {
 		mainWindow.println("-------- Import Form Completed --------");
+		task.publish(50);
 	}
 	
 	public void inputFiles(File dir, MainWindow mainWindow) {
@@ -69,10 +75,16 @@ public class FormMap {
 			}
 		});
 	}
-	
-	public void finishFiles(MainWindow mainWindow) {
-		mainWindow.println("-------- Import Files Completed --------");
+	public void preStartFiles(MainWindow mainWindow, ProcessFileTask task) {
+		mainWindow.println("-------- Import Files Start --------");
 	}
+	
+	public void finishFiles(MainWindow mainWindow, ProcessFileTask task) {
+		mainWindow.println("-------- Import Files Completed --------");
+		task.publish(100);
+	}
+	
+	
 	
 
 

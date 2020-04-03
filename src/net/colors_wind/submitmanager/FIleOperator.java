@@ -52,7 +52,7 @@ public class FIleOperator {
 	}
 	
 	private void publish(ProcessFileTask task, int process, int total) {
-		task.publishFile(process, total);
+		task.publish(process, total);
 	}
 	
 	private static void savePdf(File targetFile, StudentInfo studentInfo, TrueTypeFont font) throws IOException {
@@ -102,7 +102,7 @@ public class FIleOperator {
 		});
 	}
 	
-	public void finish(MainWindow mainWindow) {
+	public void finish(MainWindow mainWindow, ProcessFileTask task) {
 		mainWindow.println("-------- File Opeation Completed --------");
 		Desktop desktop = Desktop.getDesktop();
 		mainWindow.println(new StringBuilder("保存文件到: ").append(targetDir.getAbsolutePath()).toString());
@@ -112,7 +112,14 @@ public class FIleOperator {
 			mainWindow.printlnError("无法打开资源管理器, 请手动查看文件.", e);
 			e.printStackTrace();
 		}
+		task.publish(100);
 		mainWindow.println("\n\n\n\n");
+	}
+
+
+	public void preStart(MainWindow mainWindow, ProcessFileTask task) {
+		mainWindow.println("-------- File Opeation Start --------");
+		task.publish(0);
 	}
 
 }

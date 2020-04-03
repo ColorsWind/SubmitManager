@@ -45,7 +45,7 @@ public class ImageOpeator {
 				if (IMG_FILTER.accept(null, rawName)) {
 					try {
 						entry.setValue(process(entry.getValue()));
-					} catch (IOException e) {
+					} catch (Exception e) {
 						mainWindow.printlnError(
 								new StringBuilder("将图片 ").append(entry.getValue().getName()).append(" 转为 PDF 时候出现异常: "),
 								e);
@@ -58,12 +58,12 @@ public class ImageOpeator {
 	}
 	
 	private void publish(ProcessFileTask task, int process, int total) {
-		task.publishImage(process, total);
+		task.publish(process, total);
 	}
 
 	public void finish(MainWindow mainWindow, ProcessFileTask task) {
 		mainWindow.println("-------- Image Opeation Completed --------");
-		task.publishImage(1, 1);
+		task.publish(100);
 	}
 
 	private static File process(File file) throws IOException {
@@ -79,6 +79,11 @@ public class ImageOpeator {
 		pdf.save(pdfFile);
 		pdf.close();
 		return pdfFile;
+	}
+
+	public void preStart(MainWindow mainWindow, ProcessFileTask task) {
+		mainWindow.println("-------- Image Opeation Start --------");
+		task.publish(0);
 	}
 	
 
