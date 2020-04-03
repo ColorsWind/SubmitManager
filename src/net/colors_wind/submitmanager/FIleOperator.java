@@ -17,6 +17,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.PDPageContentStream.AppendMode;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.apache.pdfbox.util.Matrix;
@@ -70,15 +71,19 @@ public class FIleOperator {
 				toClose.add(sub);
 			}
 		} else {
-			PDFont formFont = PDType0Font.load(pdf, font, true);
+			PDFont pdfFont = PDType0Font.load(pdf, font, true);
 			for(Entry<Integer, File> entry : studentInfo.getEntrySet()) {
 				PDDocument sub = PDDocument.load(entry.getValue());
+				
 				for(PDPage page : sub.getPages()) {
 					PDPage operatePage = pdf.importPage(page);
+					// calculate font size
+					PDRectangle size = operatePage.getBBox();
+					int fontSize = (int) (12 * Math.min(size.getWidth(), size.getHeight()) / PDRectangle.A4.getWidth());
 					PDPageContentStream content = new PDPageContentStream(pdf, operatePage, AppendMode.APPEND, true);
 					content.beginText();
-					content.setFont(formFont, 12);
-					content.setTextMatrix(Matrix.getTranslateInstance(2, operatePage.getBBox().getUpperRightY() - 15));
+					content.setFont(pdfFont, fontSize);
+					content.setTextMatrix(Matrix.getTranslateInstance(2, operatePage.getBBox().getUpperRightY() - fontSize - 3));
 					content.showText(entry.getValue().getName());
 					content.endText();
 					content.close();
