@@ -42,11 +42,11 @@ public class StudentInfo implements Comparable<StudentInfo> {
 		return new StudentInfo(index, fileName);
 	}
 
-	public void addFile(File file) {
+	public void addStudentFile(File file) {
 		String[] split = file.getName().split("_");
 		int num;
 		try {
-			num = Integer.parseInt(split[split.length - 2]);
+			num = Integer.parseInt(split[2]);
 		} catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
 			throw new IllegalArgumentException("无法识别题序: " + file.getName());
 		}

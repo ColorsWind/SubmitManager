@@ -26,8 +26,9 @@ public class ProcessFileTask implements Runnable {
 		try {
 			FormMap form = new FormMap();
 			form.inputForm(xlsFile, mainWindow);
-			form.inputFileList(dataDir, mainWindow);
-			form.finish(mainWindow);
+			form.finishForm(mainWindow);
+			form.inputFiles(dataDir, mainWindow);
+			form.finishFiles(mainWindow);
 			checkStop();
 			if (Main.OPTIONS.isConvertImage()) {
 				ImageOpeator image = new ImageOpeator();

@@ -47,28 +47,34 @@ public class FormMap {
 			inputForm0(file);
 			mainWindow.println(new StringBuilder("成功读取表格, 共计: ").append(data.size()).append(" 条数据.").toString());
 		} catch (Exception e) {
-			mainWindow.println(new StringBuilder("读取表格时出现异常: ").append(e.toString()).toString());
+			mainWindow.printlnError("读取表格时候出现异常", e);
 			e.printStackTrace();
 			throw new InterruptedException();
 		}
 	}
 	
-	public void inputFileList(File dir, MainWindow mainWindow) {
+	public void finishForm(MainWindow mainWindow) {
+		mainWindow.println("-------- Import Form Completed --------");
+	}
+	
+	public void inputFiles(File dir, MainWindow mainWindow) {
 		FilenameFilter filter = Main.OPTIONS.isConvertImage() ? ImageOpeator.ALL_FILTER : ImageOpeator.PDF_FILTER; 
 		Arrays.stream(dir.listFiles(filter)).forEach(file -> {
 			try {
 				StudentInfo info = getStudentInfo(file.getName());
-				info.addFile(file);
+				info.addStudentFile(file);
 			} catch (Exception e) {
-				mainWindow.printlnError("获取文件列表时出错: ", e);
+				mainWindow.printlnError("获取文件列表时出错", e);
 				e.printStackTrace();
 			}
 		});
 	}
 	
-	public void finish(MainWindow mainWindow) {
-		mainWindow.println("-------- Import Form Completed --------");
+	public void finishFiles(MainWindow mainWindow) {
+		mainWindow.println("-------- Import Files Completed --------");
 	}
+	
+
 
 	public StudentInfo getStudentInfo(@NonNull String fileName) throws IllegalArgumentException {
 		int indexOf;
