@@ -47,7 +47,6 @@ public class Options {
 	private volatile boolean addRawData = false;
 	private volatile boolean tryToCombine = true;
 	private volatile boolean convertImage = true;
-	private volatile boolean moveInsteadCopy = false;
 	@NonNull
 	private volatile ConflictStrategy strategy = ConflictStrategy.ADD_PREFIX;
 
@@ -64,7 +63,6 @@ public class Options {
 			this.setAddRawData(Boolean.parseBoolean(map.get("AddRawData").toString()));
 			this.setTryToCombine(Boolean.parseBoolean(Objects.toString(map.get("TryToCombine"))));
 			this.setConvertImage(Boolean.parseBoolean(Objects.toString(map.get("ConvertImage"))));
-			this.setMoveInsteadCopy(Boolean.parseBoolean(Objects.toString(map.get("MoveInsteadCopy"))));
 			this.setStrategy(ConflictStrategy.getStrategy(Objects.toString(map.get("ConflictStrategy"))).orElse(strategy));
 			reader.close();
 			in.close();
@@ -92,7 +90,6 @@ public class Options {
 		map.put("AddRawData", addRawData);
 		map.put("TryToCombine", tryToCombine);
 		map.put("ConvertImage", convertImage);
-		map.put("MoveInsteadCopy", moveInsteadCopy);
 		map.put("ConflictStrategy", strategy.name());
 		OutputStream out = new FileOutputStream(CONF_FILE_NAME);
 		Writer writer = new OutputStreamWriter(out, "utf8");
@@ -110,7 +107,6 @@ public class Options {
 		this.addRawData = outputOption.checkboxAddRawData.isSelected();
 		this.tryToCombine = outputOption.checkboxCombine.isSelected();
 		this.convertImage = outputOption.checkboxImage.isSelected();
-		this.moveInsteadCopy = outputOption.checkboxMove.isSelected();
 	}
 	
 	/**
@@ -126,7 +122,6 @@ public class Options {
 		outputOption.checkboxAddRawData.setSelected(addRawData);
 		outputOption.checkboxCombine.setSelected(tryToCombine);
 		outputOption.checkboxImage.setSelected(convertImage);
-		outputOption.checkboxMove.setSelected(moveInsteadCopy);
 	}
 	
 	public TrueTypeFont loadFont(MainWindow mainWindow) {

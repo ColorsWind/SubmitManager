@@ -46,7 +46,6 @@ public class OutputOptions extends JDialog {
 	protected JCheckBox checkboxCombine;
 	protected JCheckBox checkboxImage;
 	protected JCheckBox checkboxAddRawData;
-	protected JCheckBox checkboxMove;
 
 
 	/**
@@ -176,10 +175,6 @@ public class OutputOptions extends JDialog {
 			{
 				radiobuttonCombine = new JRadioButton("按序号从小到大合并");
 				panel.add(radiobuttonCombine, "2, 8");
-			}
-			{
-				checkboxMove = new JCheckBox("移动文件代替拷贝");
-				panel.add(checkboxMove, "1, 10");
 			}
 			{
 				radiobuttonNotModify = new JRadioButton("不处理保留原始文件");
