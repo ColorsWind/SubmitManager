@@ -58,7 +58,7 @@ public class MainWindow extends JFrame {
 
 		progressBar = new JProgressBar(0, 100);
 
-		JButton buttonAdvanceOption = new JButton("高级选项");
+		JButton buttonAdvanceOption = new JButton("\u8F6C\u6362\u9009\u9879");
 		buttonAdvanceOption.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Main.outputOptions.setVisible(true);
