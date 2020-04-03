@@ -75,7 +75,7 @@ public class ImageOpeator {
 		contentStream.drawImage(imageX, 0, 0, image.getWidth(), image.getHeight());
 		contentStream.close();
 		pdf.addPage(pdfPage);
-		File pdfFile = new File(file.getParentFile(), new StringBuilder(file.getName()).append(".pdf").toString());
+		File pdfFile = new File(Options.TEMP_DIR, new StringBuilder(file.getName()).append(".pdf").toString());
 		pdf.save(pdfFile);
 		pdf.close();
 		return pdfFile;

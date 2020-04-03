@@ -25,30 +25,37 @@ import lombok.NonNull;
 @Data
 @NoArgsConstructor
 public class Options {
-	public static final String CONF_FILE_NAME;
+	public static final File CONF_FILE_NAME;
 	static {
 		File userDir = new File(System.getProperties().getProperty("user.home"));
-		CONF_FILE_NAME = new File(userDir, "submitmanager.yml").getAbsolutePath();
+		CONF_FILE_NAME = new File(userDir, "submitmanager.yml");
+	}
+	public static final File TEMP_DIR;
+	static {
+		File sysTmp = new File(System.getProperty("java.io.tmpdir"));
+		TEMP_DIR = new File(sysTmp, "subitmanager");
+		if (!TEMP_DIR.exists()) {
+			TEMP_DIR.mkdir();
+		}
 	}
 	@NonNull
 	private volatile String inputXls = "";
 	@NonNull
 	private volatile String inputDir = "";
 	@NonNull
-	private volatile String outputFile = "{7}-{8}.pdf";
+	private volatile String outputFile = "{8}-{7}.pdf";
 	private volatile boolean addRawData = false;
 	private volatile boolean tryToCombine = true;
 	private volatile boolean convertImage = true;
-	private volatile boolean moveInsteadCopy = true;
+	private volatile boolean moveInsteadCopy = false;
 	@NonNull
 	private volatile ConflictStrategy strategy = ConflictStrategy.ADD_PREFIX;
 
 
 	public void loadFromFile() throws IOException {
-		File file = new File(CONF_FILE_NAME);
-		if (file.exists()) {
+		if (CONF_FILE_NAME.exists()) {
 			Yaml yaml = new Yaml();
-			InputStream in = new FileInputStream(file);
+			InputStream in = new FileInputStream(CONF_FILE_NAME);
 			Reader reader = new InputStreamReader(in, "utf8");
 			Map<String, Object> map = yaml.load(reader);
 			this.setInputDir(Objects.toString(map.get("InputDir")));
@@ -74,9 +81,8 @@ public class Options {
 	}
 	
 	public void updateFile() throws IOException {
-		File file = new File(CONF_FILE_NAME);
-		if (!file.exists()) {
-			file.createNewFile();
+		if (!CONF_FILE_NAME.exists()) {
+			CONF_FILE_NAME.createNewFile();
 		}
 		Yaml yaml = new Yaml();
 		Map<String, Object> map = new LinkedHashMap<>();
@@ -88,7 +94,7 @@ public class Options {
 		map.put("ConvertImage", convertImage);
 		map.put("MoveInsteadCopy", moveInsteadCopy);
 		map.put("ConflictStrategy", strategy.name());
-		OutputStream out = new FileOutputStream(file);
+		OutputStream out = new FileOutputStream(CONF_FILE_NAME);
 		Writer writer = new OutputStreamWriter(out, "utf8");
 		String yamlString = yaml.dumpAsMap(map);
 		writer.append(yamlString);

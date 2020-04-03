@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map.Entry;
@@ -21,45 +20,41 @@ import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.apache.pdfbox.util.Matrix;
 
 public class FIleOperator {
-	private final File dataDir;
-	private final File target;
-
-	private final AtomicInteger countSuccess = new AtomicInteger();
+	private final File targetDir;
 
 	public FIleOperator(File dataDir) {
-		this.dataDir = dataDir;
-		this.target = new File(dataDir, new SimpleDateFormat("yyyy-MM-dd HH-mm-ss").format(new Date()));
-		target.mkdirs();
+		this.targetDir = new File(dataDir, new SimpleDateFormat("yyyy-MM-dd HH-mm-ss").format(new Date()));
+		targetDir.mkdirs();
 	}
 
 
 	public void start(MainWindow mainWindow, FormMap form, ProcessFileTask task) {
-		File[] files = dataDir.listFiles((dir, name) -> {
-			return name.toLowerCase().endsWith(".pdf");
-		});
+		final int total = form.getStudents().size();
+		final AtomicInteger count = new AtomicInteger();
 		TrueTypeFont font = Main.OPTIONS.isAddRawData() ? Main.OPTIONS.loadFont(mainWindow) : null;
-		mainWindow.println(new StringBuilder("共找到 ").append(files.length).append(" 个文件, 重命名工作即将开始.").toString());
-		final int total = files.length;
-		Arrays.stream(files).parallel().forEach(file -> {
+		form.getStudents().parallelStream().forEach(studentInfo -> {
 			try {
-				StudentInfo studentInfo = form.getStudentInfo(file.getName());
-				File re = new File(target, studentInfo.getFileName());
-				savePdf(re, studentInfo, font);
-				mainWindow.println(new StringBuilder(file.getName()).append(" -> ")
-						.append(re.getName()).toString());
-				task.publishFile(countSuccess.incrementAndGet(), total);;
+				File targetFile = new File(targetDir, studentInfo.getFileName());
+				savePdf(targetFile, studentInfo, font);
+				mainWindow.println(new StringBuilder("saved ")
+						.append(targetFile.getName()).toString());
+				publish(task, count.incrementAndGet(), total);
 			} catch (IllegalArgumentException | IOException e) {
-				mainWindow.printlnError("拷贝文件时发送错误: ", e);
+				mainWindow.printlnError("处理文件时发生错误", e);
 				e.printStackTrace();
-			} 
+			}
 		});
-		mainWindow.println(new StringBuilder("成功重命名 ").append(countSuccess.get()).append(" 个文件, 失败 ")
-				.append(files.length - countSuccess.get()).append(" 个文件").toString());
+		mainWindow.println(new StringBuilder("成功保存 ").append(count.get()).append(" 个文件, 失败 ")
+				.append(total - count.get()).append(" 个文件").toString());
 	}
 	
-	private static void savePdf(File file, StudentInfo studentInfo, TrueTypeFont font) throws IOException {
+	private void publish(ProcessFileTask task, int process, int total) {
+		task.publishFile(process, total);
+	}
+	
+	private static void savePdf(File targetFile, StudentInfo studentInfo, TrueTypeFont font) throws IOException {
 		if (Main.OPTIONS.isMoveInsteadCopy() && font == null && studentInfo.getEntrySet().size() == 1) {
-			studentInfo.getFileMap().firstEntry().getValue().renameTo(file);
+			studentInfo.getFileMap().firstEntry().getValue().renameTo(targetFile);
 			return;
 		}
 		PDDocument pdf = new PDDocument();
@@ -89,7 +84,7 @@ public class FIleOperator {
 				toClose.add(sub);
 			}	
 		}
-		pdf.save(file);
+		pdf.save(targetFile);
 		pdf.close();
 		toClose.forEach(t -> {
 			try {
@@ -103,9 +98,9 @@ public class FIleOperator {
 	public void finish(MainWindow mainWindow) {
 		mainWindow.println("-------- File Opeation Completed --------");
 		Desktop desktop = Desktop.getDesktop();
-		mainWindow.println(new StringBuilder("保存文件到: ").append(target.getAbsolutePath()).toString());
+		mainWindow.println(new StringBuilder("保存文件到: ").append(targetDir.getAbsolutePath()).toString());
 		try {
-			desktop.open(target);
+			desktop.open(targetDir);
 		} catch (IOException e) {
 			mainWindow.printlnError("无法打开资源管理器, 请手动查看文件.", e);
 			e.printStackTrace();
