@@ -42,12 +42,12 @@ public class ProcessFileTask implements Runnable {
 				checkStop();
 			}
 			ConflictStrategy.preStart(mainWindow, this);
-			Main.OPTIONS.getStrategy().resolveConflict(mainWindow, this, form);
+			StudentInfo [] students = Main.OPTIONS.getStrategy().resolveConflict(mainWindow, this, form);
 			ConflictStrategy.finish(mainWindow, this);
 			checkStop();
 			FIleOperator fileOperator = new FIleOperator(dataDir);
 			fileOperator.preStart(mainWindow, this);
-			fileOperator.start(mainWindow, form, this);
+			fileOperator.start(mainWindow, students, this);
 			fileOperator.finish(mainWindow, this);
 		} catch (InterruptedException e) {
 		} catch (Exception e) {

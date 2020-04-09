@@ -7,6 +7,7 @@ import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map.Entry;
@@ -31,11 +32,11 @@ public class FIleOperator {
 	}
 
 
-	public void start(MainWindow mainWindow, FormMap form, ProcessFileTask task) {
-		final int total = form.getStudents().size();
+	public void start(MainWindow mainWindow, StudentInfo[] students, ProcessFileTask task) {
+		final int total = students.length;
 		final AtomicInteger count = new AtomicInteger();
 		TrueTypeFont font = Main.OPTIONS.isAddRawData() ? Main.OPTIONS.loadFont(mainWindow) : null;
-		form.getStudents().parallelStream().forEach(studentInfo -> {
+		Arrays.stream(students).parallel().forEach(studentInfo -> {
 			try {
 				File targetFile = new File(targetDir, studentInfo.getFileName());
 				savePdf(targetFile, studentInfo, font);

@@ -45,9 +45,9 @@ public enum ConflictStrategy {
 		List<StudentInfo> studentsOrder = form.getStudentsOrder(comparator);
 		LinkedHashMap<String, StudentInfo> studentsMap = new LinkedHashMap<>();
 		for (StudentInfo studentInfo : studentsOrder) {
-			StudentInfo override = studentsMap.put(studentInfo.getFileNameLowerCase(), studentInfo);
-			if(override != null) {
-				mainWindow.println(new StringBuilder("覆盖文件: ").append(override.getFileName()).append(" 序号: ").append(override.getIndex()).toString());
+			StudentInfo ignore = studentsMap.putIfAbsent(studentInfo.getFileNameLowerCase(), studentInfo);
+			if(ignore != null) {
+				mainWindow.println(new StringBuilder("警告: 文件: ").append(ignore.getFileName()).append(" 序号: ").append(studentInfo.getIndex()).append("被忽略, 因为已经存在另一个同名文件, 序号: ").append(ignore.getIndex()).toString());
 			}
 		}
 		return studentsMap.values().toArray(new StudentInfo[studentsMap.size()]);
@@ -60,13 +60,14 @@ public enum ConflictStrategy {
 			StudentInfo combine = studentsMap.putIfAbsent(studentInfo.getFileNameLowerCase(), studentInfo);
 			if (combine != null) {
 				combine.getFileMap().putAll(studentInfo.getFileMap());
-				mainWindow.println(new StringBuilder("覆盖文件: ").append(combine.getFileName()).append(" 序号: ").append(combine.getIndex()).toString());
+				mainWindow.println(new StringBuilder("追加写入文件: ").append(combine.getFileName()).append(" 序号: ").append(combine.getIndex()).toString());
 			}
 		}
 		return studentsMap.values().toArray(new StudentInfo[studentsMap.size()]);
 	}
 
 	public static StudentInfo[] addPrefix(FormMap form) {
+		// 按照文件名分组
 		ConcurrentMap<String, List<StudentInfo>> collect = Arrays
 				.stream(form.getStudents().toArray(new StudentInfo[form.getStudents().size()])).parallel()
 				.collect(Collectors.groupingByConcurrent(StudentInfo::getFileNameLowerCase));
@@ -78,6 +79,7 @@ public enum ConflictStrategy {
 					StudentInfo override = new StudentInfo(student.getIndex(),
 							new StringBuilder(student.getFileName().substring(0, student.getFileName().length() - 4))
 									.append("-").append(student.getIndex()).append(".pdf").toString());
+					override.getFileMap().putAll(student.getFileMap());
 					return override;
 				});
 			}
