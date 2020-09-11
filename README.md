@@ -1,5 +1,5 @@
 # SubmitManager
-
+https://www.colors-wind.net/archives/submitmanager.html
 轻松收集作业，不再为命名发愁。配合[问卷星](https://www.wjx.cn/)收作业统一输出PDF格式。
 
 
@@ -25,7 +25,8 @@
 
 本软件原创代码部分以AGPL-3.0授权。
 
-UACTool的作者是 [kasp315b](https://github.com/kasp315b/UACTool)， https://github.com/kasp315b/UACTool其他引用的库可见 [这里](https://github.com/ColorsWind/FileRemap/network/dependencies)。
+UACTool的作者是 [kasp315b](https://github.com/kasp315b/UACTool)， 
+其他引用的库可见 [这里](https://github.com/ColorsWind/FileRemap/network/dependencies)。
 
 另外本软件内置了思源黑体，如果你使用其他字体请注意许可。
 
@@ -50,8 +51,6 @@ UACTool的作者是 [kasp315b](https://github.com/kasp315b/UACTool)， https://g
 
 ![](https://cdn.colors-wind.net/usr/uploads/2020/04/2177531772.png)
 
-由于防盗链的关系，图片需要右键查看图片才能显示。也可前往我的博客查看。
-https://www.colors-wind.net/index.php/archives/31/ 
 
 # 使用方法
 
