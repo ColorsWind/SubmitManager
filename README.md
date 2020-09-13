@@ -1,6 +1,6 @@
 # SubmitManager
-https://www.colors-wind.net/archives/submitmanager.html
 轻松收集作业，不再为命名发愁。配合[问卷星](https://www.wjx.cn/)收作业统一输出PDF格式。
+https://www.colors-wind.net/archives/submitmanager.html
 
 
 # TODO
